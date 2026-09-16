@@ -9,25 +9,47 @@
 <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:      #EAE2D0;   /* tan canvas */
-    --paper-deep: #DDD1B6;   /* deeper tan band */
-    --card:       #F5F0E3;   /* light card */
-    --ink:        #2E2A20;   /* dark bark */
-    --ink-soft:   #5D5749;   /* warm gray text */
-    --stone:      #8B8578;   /* gray */
-    --moss:       #4C6B45;   /* green accent */
-    --moss-dark:  #3B5536;
-    --moss-deep:  #2B3526;   /* dark ledger room */
-    --leaf:       #9DB98A;   /* light green on dark */
-    --clay:       #A05540;   /* loss, on light */
-    --clay-lt:    #D6947C;   /* loss, on dark */
-    --line:       rgba(46,42,32,.16);
-    --line-dark:  rgba(233,228,212,.14);
-    --disp: "Young Serif", Georgia, "Times New Roman", serif;
-    --body: "Karla", "Segoe UI", Helvetica, Arial, sans-serif;
-    --mono: "Spline Sans Mono", "SFMono-Regular", Menlo, Consolas, monospace;
-    --r: 16px;
-  }
+  /* =========================================
+     MarketSloth — Dark 60 / 30 / 10 Palette
+     ========================================= */
+
+  /* 60% — dominant dark environment */
+  --paper:      #111312;   /* main page background */
+  --paper-deep: #181B19;   /* alternating section */
+  --card:       #242826;   /* dark card surface */
+  --card-raised:#2E3130;   /* elevated card / logo charcoal */
+
+  /* 30% — warm secondary */
+  --sand:       #E6DDC8;   /* primary beige */
+  --sand-soft:  #BEB5A1;   /* muted beige */
+  --sand-dark:  #8D8575;
+
+  /* text */
+  --ink:        #F5F3EC;   /* primary white */
+  --ink-soft:   #B8BAB4;   /* secondary copy */
+  --stone:      #858A84;   /* tertiary text */
+
+  /* 10% — MarketSloth green */
+  --moss:       #64D94D;   /* main bright candle green */
+  --moss-dark:  #43A936;
+  --moss-deep:  #090B0A;
+  --leaf:       #82EA69;
+
+  /* status colors */
+  --clay:       #D27665;
+  --clay-lt:    #E69A88;
+
+  /* borders */
+  --line:       rgba(245,243,236,.10);
+  --line-dark:  rgba(245,243,236,.14);
+
+  /* typography */
+  --disp: "Young Serif", Georgia, "Times New Roman", serif;
+  --body: "Karla", "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "Spline Sans Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --r: 16px;
+}
 
   *{ box-sizing:border-box; margin:0; padding:0; }
   html{ scroll-behavior:smooth; }
@@ -92,10 +114,24 @@
     backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line);
   }
-  .nav{ display:flex; align-items:center; justify-content:space-between; height:68px; }
+  .nav{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:68px;
+}
   .brand{ display:flex; align-items:center; gap:.6rem; text-decoration:none; }
-  .brand .mark{ width:36px; height:36px; border-radius:50%; object-fit:cover; }
-  .brand .name{ font-family:var(--disp); font-size:1.18rem; }
+  .brand .mark{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.brand .name{
+  font-family:var(--disp);
+  font-size:1.45rem;
+}
   .brand .name em{ font-style:normal; color:var(--moss); }
   .nav-links{ display:flex; gap:1.7rem; list-style:none; }
   .nav-links a{
@@ -352,7 +388,7 @@
 <header class="site">
   <div class="wrap nav">
     <a class="brand" href="#top" aria-label="MarketSloth home">
-      <img class="mark" src="friendly_sloth_finance_badge.png" alt="" aria-hidden="true"/>
+      <img class="mark" src="assets/MarketSloth logomark nobackground.png" alt="" aria-hidden="true"/>
       <span class="name">Market<em>Sloth</em></span>
     </a>
     <ul class="nav-links">
