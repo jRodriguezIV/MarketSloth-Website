@@ -25,8 +25,8 @@
   --sand-dark:  #8D8575;
 
   /* text */
-  --ink:        #F5F3EC;   /* primary white */
-  --ink-soft:   #B8BAB4;   /* secondary copy */
+  --ink:        #E6DDC8;   /* primary beige text */
+  --ink-soft:   #BEB5A1;   /* secondary beige copy */
   --stone:      #858A84;   /* tertiary text */
 
   /* 10% — MarketSloth green */
@@ -40,8 +40,8 @@
   --clay-lt:    #E69A88;
 
   /* borders */
-  --line:       rgba(245,243,236,.10);
-  --line-dark:  rgba(245,243,236,.14);
+  --line:       rgba(230,221,200,.10);
+  --line-dark:  rgba(230,221,200,.14);
 
   /* typography */
   --disp: "Young Serif", Georgia, "Times New Roman", serif;
@@ -87,7 +87,7 @@
   h3{ font-size:1.12rem; }
 
   .lede{ color:var(--ink-soft); font-size:1.08rem; max-width:56ch; }
-  .dark .lede{ color:#C9C3AF; }
+  .dark .lede{ color:var(--sand-soft); }
 
   /* ---------- buttons ---------- */
   .btn{
@@ -99,17 +99,17 @@
   }
   .btn:hover{ transform:translateY(-1px); }
   .btn:focus-visible{ outline:3px solid var(--moss); outline-offset:3px; }
-  .btn-primary{ background:var(--moss); color:#F3F0E4; }
+  .btn-primary{ background:var(--moss); color:var(--paper); }
   .btn-primary:hover{ background:var(--moss-dark); }
   .btn-ghost{ border-color:var(--line); color:var(--ink); background:transparent; }
   .btn-ghost:hover{ border-color:var(--ink); }
-  .dark .btn-ghost{ border-color:var(--line-dark); color:#EDE8D6; }
-  .dark .btn-ghost:hover{ border-color:#EDE8D6; }
+  .dark .btn-ghost{ border-color:var(--line-dark); color:var(--sand); }
+  .dark .btn-ghost:hover{ border-color:var(--sand); }
 
   /* ---------- nav ---------- */
   header.site{
     position:sticky; top:0; z-index:40;
-    background:rgba(234,226,208,.92);
+    background:rgba(230,221,200,.92);
     background:color-mix(in srgb, var(--paper) 88%, transparent);
     backdrop-filter:blur(10px);
     border-bottom:1px solid var(--line);
@@ -150,7 +150,7 @@
     overflow:hidden;
     background:
       radial-gradient(circle at 78% 48%, rgba(100,217,77,.11), transparent 34%),
-      linear-gradient(180deg, rgba(255,255,255,.015), transparent 45%);
+      linear-gradient(180deg, rgba(230,221,200,.015), transparent 45%);
   }
   .hero-grid{
     display:grid;
@@ -226,7 +226,7 @@
   }
   .note-badge{
     display:inline-grid; place-items:center; width:19px; height:19px; border-radius:50%;
-    background:var(--moss); color:#F3F0E4; font-family:var(--mono); font-size:.66rem; font-weight:600;
+    background:var(--moss); color:var(--paper); font-family:var(--mono); font-size:.66rem; font-weight:600;
     flex:none;
   }
 
@@ -289,17 +289,17 @@
   }
   .stage h3{ font-size:1rem; margin:.5rem 0 .35rem; }
   .stage p{ font-size:.87rem; color:var(--ink-soft); }
-  .stage.ledger-stage{ background:var(--moss); border-color:var(--moss); color:#F3F0E4; }
-  .stage.ledger-stage p{ color:#D9E2CE; }
-  .stage.ledger-stage::before{ color:#BFD0B0; }
+  .stage.ledger-stage{ background:var(--moss); border-color:var(--moss); color:var(--paper); }
+  .stage.ledger-stage p{ color:var(--card); }
+  .stage.ledger-stage::before{ color:var(--paper-deep); }
   .stages-note{ margin-top:22px; font-size:.95rem; color:var(--ink-soft); }
   .stages-note strong{ color:var(--ink); }
 
   /* ---------- ledger (dark room) ---------- */
-  .dark{ background:var(--moss-deep); color:#EDE8D6; }
+  .dark{ background:var(--moss-deep); color:var(--sand); }
   .ledger-grid{ display:grid; grid-template-columns:.85fr 1.15fr; gap:56px; align-items:start; }
-  .ledger-copy p{ color:#C9C3AF; margin-bottom:1rem; font-size:1rem; }
-  .ledger-copy p strong{ color:#EDE8D6; }
+  .ledger-copy p{ color:var(--sand-soft); margin-bottom:1rem; font-size:1rem; }
+  .ledger-copy p strong{ color:var(--sand); }
   .refuses{ list-style:none; margin-top:1.4rem; display:grid; gap:.55rem; }
   .refuses li{
     font-family:var(--mono); font-size:.8rem; color:#A8A78E; letter-spacing:.03em;
@@ -313,7 +313,7 @@
   .ledger-head{
     display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;
     padding:16px 20px; border-bottom:1px solid var(--line-dark);
-    font-family:var(--mono); font-size:.78rem; letter-spacing:.1em; color:#C9C3AF;
+    font-family:var(--mono); font-size:.78rem; letter-spacing:.1em; color:var(--sand-soft);
   }
   .ledger-head .losses-first{ color:var(--clay-lt); }
   table{ width:100%; border-collapse:collapse; font-family:var(--mono); font-size:.83rem; }
@@ -321,13 +321,13 @@
     text-align:left; font-weight:500; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase;
     color:#A8A78E; padding:12px 20px; border-bottom:1px solid var(--line-dark);
   }
-  td{ padding:11px 20px; border-bottom:1px solid rgba(233,228,212,.07); color:#DDD8C4; }
+  td{ padding:11px 20px; border-bottom:1px solid rgba(230,221,200,.07); color:var(--sand); }
   tr:last-child td{ border-bottom:none; }
   td.r, th.r{ text-align:right; }
   .res{ font-size:.7rem; font-weight:600; letter-spacing:.1em; padding:.25em .7em; border-radius:999px; }
   .res-loss{ background:rgba(214,148,124,.16); color:var(--clay-lt); }
   .res-win{ background:rgba(157,185,138,.16); color:var(--leaf); }
-  .res-flat{ background:rgba(233,228,212,.1); color:#B9B49E; }
+  .res-flat{ background:rgba(230,221,200,.1); color:var(--sand-soft); }
   td .neg{ color:var(--clay-lt); }
   td .pos{ color:var(--leaf); }
   .ledger-foot{
@@ -383,7 +383,22 @@
   footer.site{ border-top:1px solid var(--line); padding:40px 0 52px; }
   .foot-grid{ display:flex; justify-content:space-between; gap:32px; flex-wrap:wrap; }
   .foot-brand{ display:flex; align-items:center; gap:.55rem; font-family:var(--disp); }
-  .foot-brand .mark{ width:28px; height:28px; border-radius:50%; object-fit:cover; }
+  .foot-brand .mark{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  object-fit:cover;
+  transform:scale(1.12);
+}
+
+.trademark{
+  font-family:var(--body);
+  font-size:.48em;
+  font-weight:600;
+  vertical-align:super;
+  margin-left:2px;
+  color:var(--sand-soft);
+}
   .fine{ font-size:.8rem; color:var(--stone); max-width:62ch; margin-top:14px; }
   .foot-links{ list-style:none; display:flex; gap:1.4rem; font-size:.86rem; }
   .foot-links a{ color:var(--ink-soft); text-decoration:none; }
@@ -434,7 +449,7 @@
 <header class="site">
   <div class="wrap nav">
     <a class="brand" href="#top" aria-label="MarketSloth home">
-      <img class="mark" src="assets/MarketSloth logomark nobackground.png" alt="" aria-hidden="true"/>
+      <img class="mark" src="assets/MarketSloth logomark nobackground beige.png" alt="" aria-hidden="true"/>
       <span class="name">Market<em>Sloth</em></span>
     </a>
     <ul class="nav-links">
@@ -685,8 +700,8 @@
   <div class="wrap foot-grid">
     <div>
       <div class="foot-brand">
-        <img class="mark" src="friendly_sloth_finance_badge.png" alt="" aria-hidden="true"/>
-        <span>MarketSloth</span>
+        <img class="mark" src="assets/MarketSloth logomark nobackground beige.png" alt="" aria-hidden="true"/>
+        <span>MarketSloth<span class="trademark">™</span></span>
       </div>
       <p class="fine">MarketSloth is not a registered investment adviser and does not provide personalized financial advice. Signals are informational; markets involve risk of loss, and any signal can fail. Every trade is your decision, executed in your own brokerage account.</p>
     </div>

@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MarketSloth — We watch the market so you don't have to</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+  /* =========================================
+     MarketSloth — Dark 60 / 30 / 10 Palette
+     ========================================= */
+
+  /* 60% — dominant dark environment */
+  --paper:      #111312;   /* main page background */
+  --paper-deep: #181B19;   /* alternating section */
+  --card:       #242826;   /* dark card surface */
+  --card-raised:#2E3130;   /* elevated card / logo charcoal */
+
+  /* 30% — warm secondary */
+  --sand:       #E6DDC8;   /* primary beige */
+  --sand-soft:  #BEB5A1;   /* muted beige */
+  --sand-dark:  #8D8575;
+
+  /* text */
+  --ink:        #E6DDC8;   /* primary beige text */
+  --ink-soft:   #BEB5A1;   /* secondary beige copy */
+  --stone:      #858A84;   /* tertiary text */
+
+  /* 10% — MarketSloth green */
+  --moss:       #64D94D;   /* main bright candle green */
+  --moss-dark:  #43A936;
+  --moss-deep:  #090B0A;
+  --leaf:       #82EA69;
+
+  /* status colors */
+  --clay:       #D27665;
+  --clay-lt:    #E69A88;
+
+  /* borders */
+  --line:       rgba(230,221,200,.10);
+  --line-dark:  rgba(230,221,200,.14);
+
+  /* typography */
+  --disp: "Young Serif", Georgia, "Times New Roman", serif;
+  --body: "Karla", "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "Spline Sans Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --r: 16px;
+}
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:17px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--moss); color:var(--card); }
+
+  /* faint paper grain */
+  body::before{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  main, header.site, footer.site{ position:relative; z-index:1; }
+
+  a{ color:inherit; }
+  img, svg{ display:block; }
+
+  .wrap{ max-width:1120px; margin:0 auto; padding:0 24px; }
+
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; font-weight:500;
+    letter-spacing:.18em; text-transform:uppercase; color:var(--moss);
+  }
+  .dark .eyebrow{ color:var(--leaf); }
+
+  h1,h2,h3{ font-family:var(--disp); font-weight:400; line-height:1.12; letter-spacing:-.01em; }
+  h1{ font-size:clamp(2.3rem, 5vw, 3.9rem); }
+  h2{ font-size:clamp(1.7rem, 3.4vw, 2.5rem); }
+  h3{ font-size:1.12rem; }
+
+  .lede{ color:var(--ink-soft); font-size:1.08rem; max-width:56ch; }
+  .dark .lede{ color:var(--sand-soft); }
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-flex; align-items:center; gap:.55em;
+    font-family:var(--body); font-weight:700; font-size:.98rem;
+    padding:.78em 1.35em; border-radius:999px; text-decoration:none;
+    border:1.5px solid transparent; cursor:pointer;
+    transition:transform .18s ease, background .18s ease, color .18s ease, border-color .18s ease;
+  }
+  .btn:hover{ transform:translateY(-1px); }
+  .btn:focus-visible{ outline:3px solid var(--moss); outline-offset:3px; }
+  .btn-primary{ background:var(--moss); color:var(--paper); }
+  .btn-primary:hover{ background:var(--moss-dark); }
+  .btn-ghost{ border-color:var(--line); color:var(--ink); background:transparent; }
+  .btn-ghost:hover{ border-color:var(--ink); }
+  .dark .btn-ghost{ border-color:var(--line-dark); color:var(--sand); }
+  .dark .btn-ghost:hover{ border-color:var(--sand); }
+
+  /* ---------- nav ---------- */
+  header.site{
+    position:sticky; top:0; z-index:40;
+    background:rgba(230,221,200,.92);
+    background:color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:68px;
+}
+  .brand{ display:flex; align-items:center; gap:.6rem; text-decoration:none; }
+  .brand .mark{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.brand .name{
+  font-family:var(--disp);
+  font-size:1.45rem;
+}
+  .brand .name em{ font-style:normal; color:var(--moss); }
+  .nav-links{ display:flex; gap:1.7rem; list-style:none; }
+  .nav-links a{
+    text-decoration:none; font-weight:600; font-size:.95rem; color:var(--ink-soft);
+    padding:.3em 0; border-bottom:2px solid transparent; transition:color .15s, border-color .15s;
+  }
+  .nav-links a:hover{ color:var(--ink); border-color:var(--moss); }
+  .nav .btn{ padding:.55em 1.1em; font-size:.9rem; }
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:calc(100svh - 68px);
+    display:grid;
+    align-items:center;
+    padding:44px 0 36px;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 78% 48%, rgba(100,217,77,.11), transparent 34%),
+      linear-gradient(180deg, rgba(230,221,200,.015), transparent 45%);
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:minmax(330px,.78fr) minmax(520px,1.35fr);
+    gap:18px;
+    align-items:center;
+  }
+  .hero-copy{ position:relative; z-index:2; max-width:570px; }
+  .hero h1{
+    max-width:11.5ch;
+    margin:.65rem 0 1.1rem;
+    font-size:clamp(3.2rem, 6.4vw, 6.15rem);
+    line-height:.94;
+    letter-spacing:-.035em;
+  }
+  .hero h1 .quiet{ color:var(--sand); }
+  .hero .lede{ max-width:44ch; font-size:1.12rem; }
+  .hero .lede strong{ color:var(--ink); }
+  .hero-art{
+    position:relative;
+    z-index:1;
+    width:min(860px, 66vw);
+    margin-left:-70px;
+    filter:drop-shadow(0 32px 52px rgba(0,0,0,.35));
+  }
+  .hero-art img{
+    width:100%;
+    height:auto;
+    object-fit:contain;
+  }
+  .hero-ctas{ display:flex; gap:.8rem; flex-wrap:wrap; margin:1.7rem 0 1.1rem; }
+  .hero-note{
+    font-family:var(--mono); font-size:.8rem; color:var(--stone); letter-spacing:.02em;
+  }
+
+  /* ---------- alert card ---------- */
+  .alert-card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--r);
+    box-shadow:0 22px 44px -26px rgba(46,42,32,.45);
+    overflow:hidden; max-width:430px; margin-left:auto;
+  }
+  .alert-top{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 18px; border-bottom:1px solid var(--line);
+    font-family:var(--mono); font-size:.74rem; letter-spacing:.08em; color:var(--ink-soft);
+    background:linear-gradient(180deg, rgba(76,107,69,.10), transparent);
+  }
+  .pill{
+    display:inline-flex; align-items:center; gap:.45em;
+    font-family:var(--mono); font-size:.72rem; font-weight:600; letter-spacing:.08em;
+    padding:.3em .8em; border-radius:999px;
+  }
+  .pill-green{ background:rgba(76,107,69,.16); color:var(--moss-dark); }
+  .pill-tan{ background:rgba(139,133,120,.16); color:var(--ink-soft); }
+  .dot{ width:8px; height:8px; border-radius:50%; background:var(--moss); animation:breathe 3.2s ease-in-out infinite; }
+  @keyframes breathe{ 0%,100%{ transform:scale(1); opacity:1;} 50%{ transform:scale(.7); opacity:.55;} }
+
+  .alert-body{ padding:20px 22px 8px; }
+  .alert-body .reason{ font-family:var(--disp); font-size:1.14rem; line-height:1.35; margin-bottom:.35rem; }
+  .alert-body .meta{ font-size:.86rem; color:var(--ink-soft); margin-bottom:1rem; }
+  .levels{ border-top:1px dashed var(--line); }
+  .level{
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding:.62rem 0; border-bottom:1px dashed var(--line);
+    font-family:var(--mono); font-size:.9rem;
+  }
+  .level .lab{ color:var(--ink-soft); font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; }
+  .level .val{ font-weight:600; }
+  .level.invalid .val{ color:var(--clay); }
+  .alert-foot{
+    display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;
+    padding:13px 22px 16px; font-family:var(--mono); font-size:.72rem; color:var(--stone);
+  }
+  .note-badge{
+    display:inline-grid; place-items:center; width:19px; height:19px; border-radius:50%;
+    background:var(--moss); color:var(--paper); font-family:var(--mono); font-size:.66rem; font-weight:600;
+    flex:none;
+  }
+
+  /* ---------- engine strip ---------- */
+  .engine{
+    background:var(--paper-deep); border-block:1px solid var(--line);
+    padding:13px 0;
+  }
+  .engine .row{
+    display:flex; align-items:center; gap:1.6rem; flex-wrap:wrap;
+    font-family:var(--mono); font-size:.8rem; color:var(--ink-soft); letter-spacing:.03em;
+  }
+  .engine .row .live{ display:inline-flex; align-items:center; gap:.55em; color:var(--moss-dark); font-weight:600; }
+  .engine .row .good{ color:var(--moss-dark); }
+
+  /* ---------- sections ---------- */
+  .section{ padding:88px 0; }
+  .section-head{ max-width:640px; margin-bottom:44px; }
+  .section-head h2{ margin:.5rem 0 .8rem; }
+
+  /* problem cards */
+  .trio{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .fail{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--r);
+    padding:26px 24px;
+  }
+  .fail .tag{
+    font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--clay); display:block; margin-bottom:.9rem;
+  }
+  .fail h3{ margin-bottom:.5rem; }
+  .fail p{ color:var(--ink-soft); font-size:.96rem; }
+  .fail .quote{
+    font-family:var(--mono); font-size:.85rem; background:rgba(139,133,120,.12);
+    border-radius:8px; padding:.5em .8em; margin-top:.9rem; display:inline-block;
+  }
+  .replace{
+    margin-top:26px; font-size:1.02rem; color:var(--ink-soft); max-width:64ch;
+  }
+  .replace strong{ color:var(--ink); }
+
+  /* anatomy */
+  .anatomy{ background:var(--paper-deep); border-block:1px solid var(--line); }
+  .anatomy-grid{ display:grid; grid-template-columns:.95fr 1.05fr; gap:56px; align-items:center; }
+  .anatomy .alert-card{ margin:0; }
+  .legend{ list-style:none; display:grid; gap:1.15rem; }
+  .legend li{ display:flex; gap:.85rem; align-items:flex-start; }
+  .legend h3{ font-size:1.05rem; margin-bottom:.15rem; }
+  .legend p{ color:var(--ink-soft); font-size:.95rem; }
+
+  /* lifecycle */
+  .stages{ list-style:none; display:grid; grid-template-columns:repeat(5,1fr); gap:14px; counter-reset:stage; }
+  .stage{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--r);
+    padding:20px 18px; position:relative; counter-increment:stage;
+  }
+  .stage::before{
+    content:counter(stage, decimal-leading-zero);
+    font-family:var(--mono); font-size:.72rem; color:var(--stone); letter-spacing:.1em;
+  }
+  .stage h3{ font-size:1rem; margin:.5rem 0 .35rem; }
+  .stage p{ font-size:.87rem; color:var(--ink-soft); }
+  .stage.ledger-stage{ background:var(--moss); border-color:var(--moss); color:var(--paper); }
+  .stage.ledger-stage p{ color:var(--card); }
+  .stage.ledger-stage::before{ color:var(--paper-deep); }
+  .stages-note{ margin-top:22px; font-size:.95rem; color:var(--ink-soft); }
+  .stages-note strong{ color:var(--ink); }
+
+  /* ---------- ledger (dark room) ---------- */
+  .dark{ background:var(--moss-deep); color:var(--sand); }
+  .ledger-grid{ display:grid; grid-template-columns:.85fr 1.15fr; gap:56px; align-items:start; }
+  .ledger-copy p{ color:var(--sand-soft); margin-bottom:1rem; font-size:1rem; }
+  .ledger-copy p strong{ color:var(--sand); }
+  .refuses{ list-style:none; margin-top:1.4rem; display:grid; gap:.55rem; }
+  .refuses li{
+    font-family:var(--mono); font-size:.8rem; color:#A8A78E; letter-spacing:.03em;
+    display:flex; gap:.6em; align-items:baseline;
+  }
+  .refuses li::before{ content:"×"; color:var(--clay-lt); font-weight:600; }
+
+  .ledger-card{
+    background:#333F2C; border:1px solid var(--line-dark); border-radius:var(--r); overflow:hidden;
+  }
+  .ledger-head{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;
+    padding:16px 20px; border-bottom:1px solid var(--line-dark);
+    font-family:var(--mono); font-size:.78rem; letter-spacing:.1em; color:var(--sand-soft);
+  }
+  .ledger-head .losses-first{ color:var(--clay-lt); }
+  table{ width:100%; border-collapse:collapse; font-family:var(--mono); font-size:.83rem; }
+  th{
+    text-align:left; font-weight:500; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase;
+    color:#A8A78E; padding:12px 20px; border-bottom:1px solid var(--line-dark);
+  }
+  td{ padding:11px 20px; border-bottom:1px solid rgba(230,221,200,.07); color:var(--sand); }
+  tr:last-child td{ border-bottom:none; }
+  td.r, th.r{ text-align:right; }
+  .res{ font-size:.7rem; font-weight:600; letter-spacing:.1em; padding:.25em .7em; border-radius:999px; }
+  .res-loss{ background:rgba(214,148,124,.16); color:var(--clay-lt); }
+  .res-win{ background:rgba(157,185,138,.16); color:var(--leaf); }
+  .res-flat{ background:rgba(230,221,200,.1); color:var(--sand-soft); }
+  td .neg{ color:var(--clay-lt); }
+  td .pos{ color:var(--leaf); }
+  .ledger-foot{
+    padding:15px 20px; border-top:1px solid var(--line-dark);
+    display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    font-family:var(--mono); font-size:.74rem; color:#A8A78E;
+  }
+  .ledger-foot .net{ color:var(--leaf); font-weight:600; }
+  .sample-note{ font-size:.68rem; color:#8B8A73; }
+
+  /* ---------- guardrails ---------- */
+  .guard-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
+  .rules{ list-style:none; display:flex; flex-wrap:wrap; gap:.6rem; margin-top:1.4rem; }
+  .rules li{
+    font-family:var(--mono); font-size:.8rem; font-weight:500;
+    border:1.5px solid var(--line); border-radius:999px; padding:.5em 1em; color:var(--ink-soft);
+    background:var(--card);
+  }
+  .rules li b{ color:var(--moss-dark); font-weight:600; }
+  .guard-cards{ display:grid; gap:18px; }
+  .guard-card{
+    background:var(--card); border:1px solid var(--line); border-left:4px solid var(--clay);
+    border-radius:var(--r); padding:20px 22px;
+    box-shadow:0 18px 36px -26px rgba(46,42,32,.4);
+  }
+  .guard-card.cool{ border-left-color:var(--stone); }
+  .guard-card .gtag{
+    font-family:var(--mono); font-size:.7rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--clay); display:block; margin-bottom:.55rem;
+  }
+  .guard-card.cool .gtag{ color:var(--stone); }
+  .guard-card h3{ margin-bottom:.35rem; }
+  .guard-card p{ font-size:.93rem; color:var(--ink-soft); }
+  .guard-card p b{ color:var(--ink); }
+
+  /* ---------- what it isn't ---------- */
+  .isnt{ background:var(--paper-deep); border-block:1px solid var(--line); }
+  .isnt-list{ list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:0; border-top:1px solid var(--line); }
+  .isnt-list li{ padding:30px 26px 30px 0; border-bottom:1px solid var(--line); }
+  .isnt-list li:nth-child(odd){ border-right:1px solid var(--line); padding-right:36px; }
+  .isnt-list li:nth-child(even){ padding-left:36px; }
+  .isnt-list h3{ font-size:1.3rem; margin-bottom:.4rem; }
+  .isnt-list h3 .no{ color:var(--clay); }
+  .isnt-list p{ color:var(--ink-soft); font-size:.96rem; }
+
+  /* ---------- cta ---------- */
+  .cta{ text-align:center; }
+  .cta h2{ margin:.5rem auto .9rem; max-width:16ch; }
+  .cta .lede{ margin:0 auto 1.8rem; }
+  .cta .price-note{ font-family:var(--mono); font-size:.8rem; color:var(--stone); margin-top:1.1rem; }
+
+  /* ---------- footer ---------- */
+  footer.site{ border-top:1px solid var(--line); padding:40px 0 52px; }
+  .foot-grid{ display:flex; justify-content:space-between; gap:32px; flex-wrap:wrap; }
+  .foot-brand{ display:flex; align-items:center; gap:.55rem; font-family:var(--disp); }
+  .foot-brand .mark{ width:28px; height:28px; border-radius:50%; object-fit:cover; }
+  .fine{ font-size:.8rem; color:var(--stone); max-width:62ch; margin-top:14px; }
+  .foot-links{ list-style:none; display:flex; gap:1.4rem; font-size:.86rem; }
+  .foot-links a{ color:var(--ink-soft); text-decoration:none; }
+  .foot-links a:hover{ color:var(--ink); text-decoration:underline; }
+
+  /* ---------- motion ---------- */
+  .reveal{ opacity:0; transform:translateY(16px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+  .d1{ transition-delay:.08s; } .d2{ transition-delay:.16s; } .d3{ transition-delay:.24s; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .reveal{ opacity:1; transform:none; transition:none; }
+    .dot{ animation:none; }
+    .btn{ transition:none; }
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 960px){
+    .hero-grid, .anatomy-grid, .ledger-grid, .guard-grid{ grid-template-columns:1fr; gap:40px; }
+    .hero{ min-height:auto; padding:70px 0 34px; text-align:center; }
+    .hero-copy{ max-width:680px; margin:0 auto; }
+    .hero h1{ max-width:11.5ch; margin:.65rem auto 1.1rem; }
+    .hero .lede{ margin-inline:auto; }
+    .hero-ctas{ justify-content:center; }
+    .hero-art{ width:min(820px, 112vw); margin:-34px auto -24px; transform:translateX(2%); }
+    .alert-card{ margin-left:0; }
+    .trio{ grid-template-columns:1fr; }
+    .stages{ grid-template-columns:1fr 1fr; }
+    .stage.ledger-stage{ grid-column:1 / -1; }
+    .isnt-list{ grid-template-columns:1fr; }
+    .isnt-list li{ border-right:none !important; padding:26px 0 !important; }
+    .nav-links{ display:none; }
+    .section{ padding:64px 0; }
+    .ledger-card{ overflow-x:auto; }
+    table{ min-width:560px; }
+  }
+  @media (max-width: 560px){
+    .hero{ padding-top:54px; }
+    .hero h1{ font-size:clamp(3rem, 14vw, 4.15rem); }
+    .hero-art{ width:118vw; margin-top:-18px; }
+    .hero-note{ max-width:36ch; margin-inline:auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<header class="site">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="MarketSloth home">
+      <img class="mark" src="assets/MarketSloth logomark nobackground.png" alt="" aria-hidden="true"/>
+      <span class="name">Market<em>Sloth</em></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#alert">The alert</a></li>
+      <li><a href="#ledger">The ledger</a></li>
+      <li><a href="#guardrails">Guardrails</a></li>
+    </ul>
+    <a class="btn btn-primary" href="mailto:marketslothcompany@gmail.com">Get in touch</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy reveal">
+        <span class="eyebrow">Your eyes on the market</span>
+        <h1>You can just <span class="quiet">hang around.</span></h1>
+        <h1 class="lede"><strong>We’ll watch the market for you.</strong></h1>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="mailto:marketslothcompany@gmail.com?subject=MarketSloth%20Early%20Access">Get early access</a>
+          <a class="btn btn-ghost" href="#how">See how it works</a>
+        </div>
+        <!-- <p class="hero-note">Calm alerts. Clear decisions. No constant chart-watching.</p> -->
+      </div>
+
+      <div class="hero-art reveal d2">
+        <img src="assets/Market Sloth Landing Page Art Chart Realistic.png" alt="A relaxed sloth hanging from a rising green market candlestick surrounded by jungle plants" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ENGINE STRIP ===================== -->
+  <div class="engine" aria-label="Engine status">
+    <div class="wrap row">
+      <span class="live"><span class="dot"></span>ENGINE WATCHING</span>
+      <span>14 tickers · every session</span>
+      <span>last scan: 2 min ago</span>
+      <span>alerts today: <b class="good">0</b> — silence means nothing was worth your attention.</span>
+    </div>
+  </div>
+
+  <!-- ===================== PROBLEM ===================== -->
+  <section class="section" id="how">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Why you're losing to the market</span>
+        <h2>Not intelligence. Behavior.</h2>
+        <p class="lede">Every existing option asks you to become something you're not: a chart scientist, a hype reader, or a person with infinite self-control at 3:47 PM.</p>
+      </div>
+      <div class="trio">
+        <article class="fail reveal">
+          <span class="tag">Option one</span>
+          <h3>Learn TradingView</h3>
+          <p>Months of studying indicators before you can write a single useful alert. The expertise becomes your unpaid second job.</p>
+        </article>
+        <article class="fail reveal d1">
+          <span class="tag">Option two</span>
+          <h3>Join an alert Discord</h3>
+          <p>No reasoning, no follow-up, and no accountability when it goes wrong. Just this:</p>
+          <span class="quote">SPY 676C 🚀🚀</span>
+        </article>
+        <article class="fail reveal d2">
+          <span class="tag">Option three</span>
+          <h3>Watch it yourself</h3>
+          <p>Chart-glancing during work meetings. FOMO-buying green candles. Revenge-trading red ones. Holding losers out of hope.</p>
+        </article>
+      </div>
+      <p class="replace reveal">MarketSloth replaces all three: <strong>the expertise</strong> (it knows what a setup looks like), <strong>the vigilance</strong> (it never looks away), and <strong>the missing self-control</strong> (it enforces the rules you set on your best day, during your worst one).</p>
+    </div>
+  </section>
+
+  <!-- ===================== ANATOMY OF AN ALERT ===================== -->
+  <section class="section anatomy" id="alert">
+    <div class="wrap anatomy-grid">
+      <div class="reveal">
+        <div class="alert-card" role="img" aria-label="Annotated MarketSloth alert for QQQ">
+          <div class="alert-top">
+            <span class="pill pill-green"><span class="dot"></span>CONFIRMED</span>
+            <span>INTRADAY&nbsp;·&nbsp;STRENGTH ●●●●</span>
+          </div>
+          <div class="alert-body">
+            <p class="reason"><span class="note-badge" style="display:inline-grid;vertical-align:2px;margin-right:.4em;">1</span>QQQ — reclaim of the morning range high after a failed breakdown.</p>
+            <p class="meta"><span class="note-badge" style="display:inline-grid;vertical-align:2px;margin-right:.4em;">2</span>Usually resolves within the session.</p>
+            <div class="levels">
+              <div class="level"><span class="lab"><span class="note-badge" style="display:inline-grid;vertical-align:-4px;margin-right:.5em;">3</span>Entry zone</span><span class="val">598.40 – 599.10</span></div>
+              <div class="level"><span class="lab">Target 1</span><span class="val">601.80</span></div>
+              <div class="level"><span class="lab">Target 2</span><span class="val">604.20</span></div>
+              <div class="level invalid"><span class="lab">Invalid below</span><span class="val">596.90</span></div>
+            </div>
+          </div>
+          <div class="alert-foot">
+            <span><span class="note-badge" style="display:inline-grid;vertical-align:-4px;margin-right:.5em;">4</span>signal 10:17:04 ET</span>
+            <span>delivered 10:17:22 ET</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal d1">
+        <span class="eyebrow">Ease of use</span>
+        <h2 style="margin:.5rem 0 .8rem;">Written for a human. Read in ten seconds.</h2>
+        <p class="lede" style="margin-bottom:1.6rem;">You never see an RSI setting and never learn what MACD stands for — that vocabulary lives inside the engine. Your complexity ceiling is a short message and a yes/no decision.</p>
+        <ul class="legend">
+          <li><span class="note-badge">1</span><div><h3>The setup and why, in one sentence</h3><p>Plain language. If it can't be said simply, it isn't sent.</p></div></li>
+          <li><span class="note-badge">2</span><div><h3>How strong, and how long it takes</h3><p>Signal strength plus the typical time this kind of setup needs to resolve.</p></div></li>
+          <li><span class="note-badge">3</span><div><h3>The three numbers that matter</h3><p>Entry zone, targets, and the invalidation level — printed on every alert, because failure is normal.</p></div></li>
+          <li><span class="note-badge">4</span><div><h3>Both timestamps, always</h3><p>When the signal occurred and when it was sent. Freshness is never in doubt.</p></div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== LIFECYCLE ===================== -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Passive tracking</span>
+        <h2>No signal is announced and abandoned.</h2>
+        <p class="lede">Unlike every alert service on the market, MarketSloth's attention doesn't end when the alert is sent. Each opportunity is tracked as a living thing, through its whole life.</p>
+      </div>
+      <ol class="stages">
+        <li class="stage reveal"><h3>Developing</h3><p>The engine spots a setup forming. You hear nothing yet — that's the point.</p></li>
+        <li class="stage reveal d1"><h3>Confirmed</h3><p>Conditions line up. One plain-language alert, timestamped twice.</p></li>
+        <li class="stage reveal d2"><h3>Tracked live</h3><p>Target-1 hit, runner guidance, invalidation warnings — as they happen.</p></li>
+        <li class="stage reveal d3"><h3>Resolved</h3><p>Target, stop, or expired. Win or lose, the outcome is recorded.</p></li>
+        <li class="stage ledger-stage reveal d3"><h3>On the ledger</h3><p>Into the public monthly report. Losses first, if anything.</p></li>
+      </ol>
+      <p class="stages-note reveal"><strong>Took the trade?</strong> You're told when the first target hits and when the setup dies. <strong>Skipped it?</strong> You still see how it resolved — that's how you calibrate whether to trust the next one.</p>
+    </div>
+  </section>
+
+  <!-- ===================== LEDGER (dark) ===================== -->
+  <section class="section dark" id="ledger">
+    <div class="wrap ledger-grid">
+      <div class="ledger-copy reveal">
+        <span class="eyebrow">Trust</span>
+        <h2 style="margin:.5rem 0 1rem;">The alert service that shows you its losses.</h2>
+        <p>Every subscription trading service asks you to take performance on faith. MarketSloth is built so <strong>faith is never required</strong>.</p>
+        <p>Every signal resolves into a public monthly report — targets hit, stops hit, expired setups, all of it. The receipts are contemporaneous and complete, not cherry-picked screenshots. Verify before you ever commit a dollar, and every month after launch.</p>
+        <ul class="refuses">
+          <li>no win-rate promises</li>
+          <li>no "last chance" urgency</li>
+          <li>no simulated scarcity</li>
+          <li>never touches your money</li>
+        </ul>
+      </div>
+
+      <div class="reveal d1">
+        <div class="ledger-card">
+          <div class="ledger-head">
+            <span>PUBLIC LEDGER — PREVIEW</span>
+            <span class="losses-first">LOSSES FIRST. ALWAYS.</span>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Ticker</th><th>Style</th><th>Result</th><th class="r">Outcome</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Jun 03</td><td>NVDA</td><td>Swing</td><td><span class="res res-loss">STOPPED</span></td><td class="r"><span class="neg">−1.0R</span></td></tr>
+              <tr><td>Jun 11</td><td>SPY</td><td>Intraday</td><td><span class="res res-loss">STOPPED</span></td><td class="r"><span class="neg">−1.0R</span></td></tr>
+              <tr><td>Jun 24</td><td>TSLA</td><td>Swing</td><td><span class="res res-loss">STOPPED</span></td><td class="r"><span class="neg">−1.0R</span></td></tr>
+              <tr><td>Jun 17</td><td>AMD</td><td>Swing</td><td><span class="res res-flat">EXPIRED</span></td><td class="r">0.0R</td></tr>
+              <tr><td>Jun 05</td><td>QQQ</td><td>Swing</td><td><span class="res res-win">T2 HIT</span></td><td class="r"><span class="pos">+2.1R</span></td></tr>
+              <tr><td>Jun 09</td><td>SPY</td><td>Intraday</td><td><span class="res res-win">T1 HIT</span></td><td class="r"><span class="pos">+1.2R</span></td></tr>
+              <tr><td>Jun 12</td><td>MSFT</td><td>Swing</td><td><span class="res res-win">T1 HIT</span></td><td class="r"><span class="pos">+1.4R</span></td></tr>
+              <tr><td>Jun 18</td><td>SPY</td><td>Swing</td><td><span class="res res-win">T2 HIT</span></td><td class="r"><span class="pos">+2.4R</span></td></tr>
+              <tr><td>Jun 26</td><td>QQQ</td><td>Intraday</td><td><span class="res res-win">T1 HIT</span></td><td class="r"><span class="pos">+1.1R</span></td></tr>
+              <tr><td>Jun 30</td><td>NVDA</td><td>Swing</td><td><span class="res res-win">T1 HIT</span></td><td class="r"><span class="pos">+1.3R</span></td></tr>
+            </tbody>
+          </table>
+          <div class="ledger-foot">
+            <span>10 signals · 6 targets · 3 stops · 1 expired · <span class="net">net +6.5R</span></span>
+            <span>every row links to its original timestamped alert</span>
+          </div>
+        </div>
+        <p class="sample-note" style="margin-top:10px;">Some months will be negative. Those get published too. (Illustrative preview — this is what the ledger will look like at launch.)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== GUARDRAILS ===================== -->
+  <section class="section" id="guardrails">
+    <div class="wrap guard-grid">
+      <div class="reveal">
+        <span class="eyebrow">Discipline</span>
+        <h2 style="margin:.5rem 0 .9rem;">The only product that tells you to stop.</h2>
+        <p class="lede">A brokerage makes money when you overtrade. An alert Discord makes money on hype. Their incentives forbid this feature. Ours require it.</p>
+        <p class="lede" style="margin-top:1rem;">During onboarding, you write your own rules. MarketSloth enforces them at the exact moment willpower fails — and your own history, inside the rules vs. outside them, becomes personal proof of why they exist.</p>
+        <ul class="rules" aria-label="Your guardrails">
+          <li>Max <b>3</b> trades / day</li>
+          <li>Max <b>2</b> contracts / position</li>
+          <li>Daily loss cap <b>$150</b></li>
+          <li><b>No</b> overnight holds</li>
+          <li>Cool-off after <b>2</b> straight losses</li>
+          <li>Profit-off-table reminders</li>
+        </ul>
+      </div>
+      <div class="guard-cards">
+        <article class="guard-card reveal d1">
+          <span class="gtag">Guardrail reached · 3 of 3 trades today</span>
+          <h3>AMD — intraday momentum setup confirmed</h3>
+          <p>This one is <b>logged for you</b> and resolves in the ledger like any other. <b>Sit this one out.</b> The line your calm self drew still holds.</p>
+        </article>
+        <article class="guard-card cool reveal d2">
+          <span class="gtag">Cooling-off · 2 consecutive losses</span>
+          <h3>No entries for the rest of the session</h3>
+          <p>Instead of the next entry, a pause. Tomorrow the engine is still watching — <b>nothing gets missed while you step away.</b></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WHAT IT ISN'T ===================== -->
+  <section class="section isnt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Honest expectation-setting</span>
+        <h2>What MarketSloth deliberately isn't.</h2>
+      </div>
+      <ul class="isnt-list">
+        <li class="reveal"><h3><span class="no">Not</span> a crystal ball</h3><p>It doesn't claim to predict markets and doesn't promise income. Any signal can fail — the invalidation level is printed on every alert precisely because failure is normal.</p></li>
+        <li class="reveal d1"><h3><span class="no">Not</span> autonomous</h3><p>Nothing executes without you. Every trade is your decision, in your brokerage account. MarketSloth never touches your money.</p></li>
+        <li class="reveal d1"><h3><span class="no">Not</span> a firehose</h3><p>Fewer, better, fully-explained alerts is the explicit design goal. You're drowning in noise, not starved of it.</p></li>
+        <li class="reveal d2"><h3><span class="no">Not</span> a guru</h3><p>No courses, no lifestyle photos, no "last chance" countdowns. The ledger speaks; we don't.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===================== CTA ===================== -->
+  <section class="section cta">
+    <div class="wrap reveal">
+      <span class="eyebrow">The sloth doesn't chase</span>
+      <h2>MarketSloth is on its way.</h2>
+      <p class="lede">The engine is in development. If watching less and trading better sounds like your kind of edge, reach out — we’d love to tell you more and let you know the moment it’s live.</p>
+      <div class="hero-ctas" style="justify-content:center;">
+        <a class="btn btn-primary" href="mailto:marketslothcompany@gmail.com">Email us to learn more</a>
+        <a class="btn btn-ghost" href="#ledger">See the ledger preview</a>
+      </div>
+      <p class="price-note">We read every message — <a href="mailto:marketslothcompany@gmail.com" style="color:var(--moss-dark); font-weight:600;">marketslothcompany@gmail.com</a></p>
+    </div>
+  </section>
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site">
+  <div class="wrap foot-grid">
+    <div>
+      <div class="foot-brand">
+        <img class="mark" src="friendly_sloth_finance_badge.png" alt="" aria-hidden="true"/>
+        <span>MarketSloth</span>
+      </div>
+      <p class="fine">MarketSloth is not a registered investment adviser and does not provide personalized financial advice. Signals are informational; markets involve risk of loss, and any signal can fail. Every trade is your decision, executed in your own brokerage account.</p>
+    </div>
+    <ul class="foot-links">
+      <li><a href="#ledger">Public ledger</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#guardrails">Guardrails</a></li>
+      <li><a href="mailto:marketslothcompany@gmail.com">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveals (respects reduced motion via CSS)
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
