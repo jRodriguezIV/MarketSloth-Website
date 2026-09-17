@@ -10,6 +10,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Spline+Sans+Mono:wght@400;500;600&display=swap"
     rel="stylesheet">
+
   <style>
     :root {
       /* =========================================
@@ -70,9 +71,16 @@
 
     html {
       scroll-behavior: smooth;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
     }
 
     body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+
       background: var(--paper);
       color: var(--ink);
       font-family: var(--body);
@@ -102,6 +110,8 @@
     footer.site {
       position: relative;
       z-index: 1;
+      width: 100%;
+      max-width: 100%;
     }
 
     a {
@@ -196,13 +206,20 @@
 
     /* ---------- nav ---------- */
     header.site {
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 0;
+      right: 0;
       z-index: 40;
+
       background: rgba(230, 221, 200, .92);
       background: color-mix(in srgb, var(--paper) 88%, transparent);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
+    }
+
+    main {
+      padding-top: 68px;
     }
 
     .nav {
@@ -260,6 +277,69 @@
     .nav .btn {
       padding: .55em 1.1em;
       font-size: .9rem;
+    }
+
+    /* ---------- responsive header behavior ---------- */
+
+    header.site {
+      transform: translateY(0);
+      transition: transform .24s ease;
+      will-change: transform;
+    }
+
+    header.site.header-hidden {
+      transform: translateY(-100%);
+    }
+
+    .nav {
+      position: relative;
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 42px;
+      height: 42px;
+      padding: 9px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--card);
+      cursor: pointer;
+
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      border-radius: 999px;
+      background: var(--sand);
+      transition:
+        transform .2s ease,
+        opacity .2s ease;
+    }
+
+    header.site.menu-open .menu-toggle span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    header.site.menu-open .menu-toggle span:nth-child(2) {
+      opacity: 0;
+    }
+
+    header.site.menu-open .menu-toggle span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .mobile-contact {
+      display: none;
+    }
+
+    /* Prevent sticky header from covering anchor destinations */
+    section[id] {
+      scroll-margin-top: 84px;
     }
 
     /* ---------- hero ---------- */
@@ -403,11 +483,7 @@
       }
     }
 
-    @media (max-width:560px) {
-      .signal-preview-image {
-        max-width: 340px;
-      }
-    }
+
 
     .signal-badge {
       display: inline-grid;
@@ -705,16 +781,7 @@
       }
     }
 
-    @media (max-width: 560px) {
-      .stages {
-        grid-template-columns: 1fr;
-      }
 
-      .stage {
-        padding: 20px 16px 18px;
-        border-radius: 18px;
-      }
-    }
 
     /* ---------- ledger (dark room) ---------- */
     .dark {
@@ -1018,11 +1085,10 @@
       font-size: .88rem;
     }
 
-    @media (max-width: 560px) {
-      .roadmap-grid {
-        grid-template-columns: 1fr;
-      }
+    .table-scroll-hint {
+      display: none;
     }
+
 
     /* ---------- cta ---------- */
     .cta {
@@ -1096,25 +1162,32 @@
     .fine {
       font-size: .8rem;
       color: var(--stone);
-      max-width: 62ch;
-      margin-top: 14px;
+      max-width: 52ch;
+      margin: 14px auto 0;
+      line-height: 1.55;
     }
 
-    .foot-links {
-      list-style: none;
-      display: flex;
-      gap: 1.4rem;
-      font-size: .86rem;
-    }
+    /* ---------- desktop footer cleanup ---------- */
+    @media (min-width: 961px) {
 
-    .foot-links a {
-      color: var(--ink-soft);
-      text-decoration: none;
-    }
+      .foot-grid {
+        justify-content: center;
+      }
 
-    .foot-links a:hover {
-      color: var(--ink);
-      text-decoration: underline;
+      .foot-grid>div {
+        width: 100%;
+        max-width: 680px;
+        text-align: center;
+      }
+
+      .foot-brand {
+        justify-content: center;
+      }
+
+      .fine {
+        margin: 14px auto 0;
+        max-width: 62ch;
+      }
     }
 
     /* ---------- motion ---------- */
@@ -1172,6 +1245,24 @@
         gap: 40px;
       }
 
+      .ledger-grid {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .ledger-grid>* {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .ledger-card {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
       .hero {
         min-height: auto;
         padding: 70px 0 34px;
@@ -1215,8 +1306,75 @@
       }
 
 
-      .nav-links {
+      .nav .nav-contact {
         display: none;
+      }
+
+      .menu-toggle {
+        display: inline-flex;
+      }
+
+      .mobile-contact {
+        display: block;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        right: 0;
+
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+
+        padding: 10px;
+
+        background: var(--paper-deep);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+
+        box-shadow: 0 18px 44px -20px rgba(0, 0, 0, .75);
+
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+
+        transform: translateY(-8px);
+
+        transition:
+          opacity .18s ease,
+          transform .18s ease,
+          visibility .18s ease;
+      }
+
+      header.site.menu-open .nav-links {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+
+      .nav-links li {
+        width: 100%;
+      }
+
+      .nav-links a {
+        display: block;
+        width: 100%;
+        padding: .8rem .9rem;
+
+        border: 0;
+        border-radius: 10px;
+      }
+
+      .nav-links a:hover {
+        background: rgba(100, 217, 77, .07);
+        border-color: transparent;
+      }
+
+      .mobile-contact a {
+        color: var(--moss);
       }
 
       .section {
@@ -1232,7 +1390,51 @@
       }
     }
 
+    /* ==========================================================
+   MOBILE — PHONES
+   ========================================================== */
     @media (max-width: 560px) {
+
+      /* ---------- nav ---------- */
+
+      .nav {
+        height: 62px;
+      }
+
+      .brand {
+        gap: .45rem;
+      }
+
+      .brand .mark {
+        width: 38px;
+        height: 38px;
+      }
+
+      .brand .name {
+        font-size: 1.2rem;
+      }
+
+      .nav .btn {
+        font-size: .8rem;
+        padding: .5em .9em;
+      }
+
+
+      /* ---------- hero ---------- */
+
+      .hero-grid {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .hero-grid>* {
+        min-width: 0;
+      }
+
+      .hero-copy {
+        width: 100%;
+      }
+
       .hero {
         padding-top: 54px;
       }
@@ -1241,11 +1443,122 @@
         font-size: clamp(3rem, 14vw, 4.15rem);
       }
 
-      .hero-art {
-        width: 118vw;
-        margin-top: -18px;
+      .hero .lede {
+        font-size: clamp(1.65rem, 7.5vw, 2.15rem);
+        line-height: 1.15;
+        max-width: 16ch;
+        margin-inline: auto;
       }
 
+      .hero-explainer {
+        max-width: 34ch;
+        font-size: .92rem;
+        line-height: 1.5;
+      }
+
+      .hero-ctas {
+        margin-top: 1.35rem;
+      }
+
+      .hero-art {
+        width: 118%;
+        max-width: none;
+        margin: -18px 0 -24px;
+        justify-self: center;
+        transform: none;
+      }
+
+
+      /* ---------- general section spacing ---------- */
+
+      .section-head {
+        margin-bottom: 32px;
+      }
+
+      .trio {
+        gap: 14px;
+      }
+
+
+      /* ---------- engine strip ---------- */
+
+      .engine {
+        padding: 16px 0;
+      }
+
+      .engine .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: .8rem .5rem;
+        justify-items: center;
+        text-align: center;
+      }
+
+      .engine .row>span:nth-child(even) {
+        display: none;
+      }
+
+      .engine .row>span:nth-child(odd) {
+        width: 100%;
+        justify-content: center;
+        font-size: .68rem;
+        line-height: 1.25;
+      }
+
+
+      /* ---------- lifecycle ---------- */
+
+      .stages {
+        grid-template-columns: 1fr;
+      }
+
+      .stage {
+        padding: 20px 16px 18px;
+        border-radius: 18px;
+      }
+
+
+      /* ---------- signal outcomes ---------- */
+
+      .table-scroll-hint {
+        display: block;
+        padding: 9px 14px;
+        border-bottom: 1px solid var(--line-dark);
+        font-family: var(--mono);
+        font-size: .62rem;
+        letter-spacing: .04em;
+        color: #A8A78E;
+      }
+
+      .ledger-head {
+        align-items: flex-start;
+      }
+
+      .ledger-head .preview-badge {
+        font-size: .62rem;
+      }
+
+
+      /* ---------- roadmap ---------- */
+
+      .roadmap-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        margin-top: 28px;
+      }
+
+      .roadmap-card {
+        min-height: 0;
+        padding: 22px 20px;
+      }
+
+      .roadmap-card .tag {
+        margin-bottom: .65rem;
+      }
+
+      .roadmap-note {
+        margin-top: 20px;
+      }
     }
   </style>
 </head>
@@ -1255,17 +1568,35 @@
   <!-- ===================== NAV ===================== -->
   <header class="site">
     <div class="wrap nav">
+
       <a class="brand" href="#top" aria-label="MarketSloth home">
         <img class="mark" src="assets/MarketSloth logomark nobackground beige.png" alt="" aria-hidden="true" />
         <span class="name">Market<em>Sloth</em></span>
       </a>
-      <ul class="nav-links">
+
+      <ul class="nav-links" id="primary-nav">
         <li><a href="#how">How it works</a></li>
         <li><a href="#alert">The alert</a></li>
         <li><a href="#ledger">Signal outcomes</a></li>
         <li><a href="#discipline">Discipline</a></li>
+        <li><a href="#roadmap">Roadmap</a></li>
+
+        <li class="mobile-contact">
+          <a href="#contact">Get in touch</a>
+        </li>
       </ul>
-      <a class="btn btn-primary" href="mailto:contact@marketsloth.net">Get in touch</a>
+
+      <a class="btn btn-primary nav-contact" href="#contact">
+        Get in touch
+      </a>
+
+      <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false"
+        aria-controls="primary-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
     </div>
   </header>
 
@@ -1531,6 +1862,9 @@
         </div>
 
         <div class="reveal d1">
+          <p class="table-scroll-hint">
+            Swipe to see the full table →
+          </p>
           <div class="ledger-card">
             <div class="ledger-head">
               <span>SIGNAL OUTCOMES — PREVIEW</span>
@@ -1748,7 +2082,7 @@
     </section>
 
     <!-- ===================== CTA ===================== -->
-    <section class="section cta">
+    <section class="section cta" id="contact">
       <div class="wrap reveal">
 
         <span class="eyebrow">The sloth doesn't chase</span>
@@ -1762,7 +2096,7 @@
         </p>
 
         <div class="hero-ctas" style="justify-content:center;">
-          <a class="btn btn-primary" href="mailto:contact@marketsloth.net">
+          <a class="btn btn-primary nav-contact" href="#contact">
             Get in touch
           </a>
 
@@ -1790,21 +2124,125 @@
           advice. Signals are informational; markets involve risk of loss, and any signal can fail. Every trade is your
           decision, executed in your own brokerage account.</p>
       </div>
-      <ul class="foot-links">
-        <li><a href="#how">How it works</a></li>
-        <li><a href="#ledger">Signal outcomes</a></li>
-        <li><a href="#discipline">Discipline</a></li>
-        <li><a href="mailto:contact@marketsloth.net">Contact</a></li>
-      </ul>
     </div>
   </footer>
 
   <script>
-    // Scroll reveals (respects reduced motion via CSS)
+    /* ---------- navigation menu ---------- */
+
+    const header = document.querySelector("header.site");
+    const menuToggle = document.querySelector(".menu-toggle");
+    const primaryNav = document.querySelector("#primary-nav");
+
+    function setMenu(open) {
+      header.classList.toggle("menu-open", open);
+      menuToggle.setAttribute("aria-expanded", String(open));
+      menuToggle.setAttribute(
+        "aria-label",
+        open ? "Close navigation menu" : "Open navigation menu"
+      );
+
+      if (open) {
+        header.classList.remove("header-hidden");
+      }
+    }
+
+    menuToggle.addEventListener("click", () => {
+      setMenu(!header.classList.contains("menu-open"));
+    });
+
+    primaryNav.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => setMenu(false));
+    });
+
+    document.addEventListener("click", event => {
+      if (
+        header.classList.contains("menu-open") &&
+        !header.contains(event.target)
+      ) {
+        setMenu(false);
+      }
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        setMenu(false);
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 960) {
+        setMenu(false);
+      }
+    });
+
+
+    /* ---------- hide on scroll down / reveal on scroll up ---------- */
+
+    let lastScrollY = window.scrollY;
+    let accumulatedScroll = 0;
+    let lastDirection = 0;
+
+    window.addEventListener("scroll", () => {
+      const currentScrollY = window.scrollY;
+      const delta = currentScrollY - lastScrollY;
+
+      const direction =
+        delta > 0 ? 1 :
+          delta < 0 ? -1 :
+            0;
+
+      /* Always show near the top or while menu is open */
+      if (
+        currentScrollY < 80 ||
+        header.classList.contains("menu-open")
+      ) {
+        header.classList.remove("header-hidden");
+        accumulatedScroll = 0;
+      }
+
+      else if (direction !== 0) {
+
+        /* Reset accumulator whenever direction changes */
+        if (direction !== lastDirection) {
+          accumulatedScroll = 0;
+        }
+
+        accumulatedScroll += Math.abs(delta);
+
+        /* Scrolling down — hide after a short movement */
+        if (direction === 1 && accumulatedScroll > 14) {
+          header.classList.add("header-hidden");
+          accumulatedScroll = 0;
+        }
+
+        /* Scrolling up — reveal quickly */
+        if (direction === -1 && accumulatedScroll > 8) {
+          header.classList.remove("header-hidden");
+          accumulatedScroll = 0;
+        }
+
+        lastDirection = direction;
+      }
+
+      lastScrollY = currentScrollY;
+    }, { passive: true });
+
+
+    /* ---------- section reveal animations ---------- */
+
     const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in");
+          io.unobserve(entry.target);
+        }
+      });
     }, { threshold: 0.15 });
-    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    document
+      .querySelectorAll(".reveal")
+      .forEach(element => io.observe(element));
   </script>
 </body>
 
