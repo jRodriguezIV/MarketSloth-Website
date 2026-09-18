@@ -1,725 +1,2318 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>MarketSloth — We watch the market so you don't have to</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root{
-  /* =========================================
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MarketSloth — Market Monitoring & Trade Alerts</title>
+
+  <meta name="description"
+    content="MarketSloth monitors the market for qualified trade setups, sends clear alerts with price targets and stop-loss levels, and evaluates signal outcomes using available market data." />
+
+  <link rel="icon" type="image/png" href="assets/MarketSloth Favicon.png" />
+  <!-- ---------- SEO / social sharing ---------- -->
+
+  <link rel="canonical" href="https://marketsloth.net/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://marketsloth.net/" />
+  <meta property="og:site_name" content="MarketSloth" />
+
+  <meta property="og:title" content="MarketSloth — Market Monitoring & Trade Alerts" />
+
+  <meta property="og:description"
+    content="MarketSloth monitors the market for qualified trade setups, sends clear alerts with price targets and stop-loss levels, and evaluates signal outcomes using available market data." />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <meta name="theme-color" content="#111312" />
+  <meta property="og:image" content="https://marketsloth.net/MarketSloth-og-banner.png" />
+
+  <meta property="og:image:alt" content="MarketSloth — You hang around. We'll watch the market for you." />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <meta name="twitter:image" content="https://marketsloth.net/MarketSloth-og-banner.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Karla:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Spline+Sans+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      /* =========================================
      MarketSloth — Dark 60 / 30 / 10 Palette
      ========================================= */
 
-  /* 60% — dominant dark environment */
-  --paper:      #111312;   /* main page background */
-  --paper-deep: #181B19;   /* alternating section */
-  --card:       #242826;   /* dark card surface */
-  --card-raised:#2E3130;   /* elevated card / logo charcoal */
+      /* 60% — dominant dark environment */
+      --paper: #111312;
+      /* main page background */
+      --paper-deep: #181B19;
+      /* alternating section */
+      --card: #242826;
+      /* dark card surface */
 
-  /* 30% — warm secondary */
-  --sand:       #E6DDC8;   /* primary beige */
-  --sand-soft:  #BEB5A1;   /* muted beige */
-  --sand-dark:  #8D8575;
+      /* 30% — warm secondary */
+      --sand: #E6DDC8;
+      /* primary beige */
+      --sand-soft: #BEB5A1;
+      /* muted beige */
+      --sand-dark: #8D8575;
 
-  /* text */
-  --ink:        #E6DDC8;   /* primary beige text */
-  --ink-soft:   #BEB5A1;   /* secondary beige copy */
-  --stone:      #858A84;   /* tertiary text */
+      /* text */
+      --ink: #E6DDC8;
+      /* primary beige text */
+      --ink-soft: #BEB5A1;
+      /* secondary beige copy */
+      --stone: #858A84;
+      /* tertiary text */
 
-  /* 10% — MarketSloth green */
-  --moss:       #64D94D;   /* main bright candle green */
-  --moss-dark:  #43A936;
-  --moss-deep:  #090B0A;
-  --leaf:       #82EA69;
+      /* 10% — MarketSloth green */
+      --moss: #64D94D;
+      /* main bright candle green */
+      --moss-dark: #43A936;
+      --moss-deep: #090B0A;
+      --leaf: #82EA69;
 
-  /* status colors */
-  --clay:       #D27665;
-  --clay-lt:    #E69A88;
+      /* status colors */
+      --clay: #D27665;
+      --clay-lt: #E69A88;
 
-  /* borders */
-  --line:       rgba(230,221,200,.10);
-  --line-dark:  rgba(230,221,200,.14);
+      /* borders */
+      --line: rgba(230, 221, 200, .10);
+      --line-dark: rgba(230, 221, 200, .14);
 
-  /* typography */
-  --disp: "Young Serif", Georgia, "Times New Roman", serif;
-  --body: "Karla", "Segoe UI", Helvetica, Arial, sans-serif;
-  --mono: "Spline Sans Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+      /* typography */
+      --disp: "Young Serif", Georgia, "Times New Roman", serif;
+      --body: "Karla", "Segoe UI", Helvetica, Arial, sans-serif;
+      --mono: "Spline Sans Mono", "SFMono-Regular", Menlo, Consolas, monospace;
 
-  --r: 16px;
-}
+      --r: 16px;
+    }
 
-  *{ box-sizing:border-box; margin:0; padding:0; }
-  html{ scroll-behavior:smooth; }
-  body{
-    background:var(--paper);
-    color:var(--ink);
-    font-family:var(--body);
-    font-size:17px;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-  }
-  ::selection{ background:var(--moss); color:var(--card); }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  /* faint paper grain */
-  body::before{
-    content:""; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.05;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-  main, header.site, footer.site{ position:relative; z-index:1; }
+    html {
+      scroll-behavior: smooth;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
 
-  a{ color:inherit; }
-  img, svg{ display:block; }
+    body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
 
-  .wrap{ max-width:1120px; margin:0 auto; padding:0 24px; }
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 17px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  .eyebrow{
-    font-family:var(--mono); font-size:12px; font-weight:500;
-    letter-spacing:.18em; text-transform:uppercase; color:var(--moss);
-  }
-  .dark .eyebrow{ color:var(--leaf); }
+    ::selection {
+      background: var(--moss);
+      color: var(--card);
+    }
 
-  h1,h2,h3{ font-family:var(--disp); font-weight:400; line-height:1.12; letter-spacing:-.01em; }
-  h1{ font-size:clamp(2.3rem, 5vw, 3.9rem); }
-  h2{ font-size:clamp(1.7rem, 3.4vw, 2.5rem); }
-  h3{ font-size:1.12rem; }
+    /* faint paper grain */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: .05;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
 
-  .lede{ color:var(--ink-soft); font-size:1.08rem; max-width:56ch; }
-  .dark .lede{ color:var(--sand-soft); }
+    main,
+    header.site,
+    footer.site {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 100%;
+    }
 
-  /* ---------- buttons ---------- */
-  .btn{
-    display:inline-flex; align-items:center; gap:.55em;
-    font-family:var(--body); font-weight:700; font-size:.98rem;
-    padding:.78em 1.35em; border-radius:999px; text-decoration:none;
-    border:1.5px solid transparent; cursor:pointer;
-    transition:transform .18s ease, background .18s ease, color .18s ease, border-color .18s ease;
-  }
-  .btn:hover{ transform:translateY(-1px); }
-  .btn:focus-visible{ outline:3px solid var(--moss); outline-offset:3px; }
-  .btn-primary{ background:var(--moss); color:var(--paper); }
-  .btn-primary:hover{ background:var(--moss-dark); }
-  .btn-ghost{ border-color:var(--line); color:var(--ink); background:transparent; }
-  .btn-ghost:hover{ border-color:var(--ink); }
-  .dark .btn-ghost{ border-color:var(--line-dark); color:var(--sand); }
-  .dark .btn-ghost:hover{ border-color:var(--sand); }
+    a {
+      color: inherit;
+    }
 
-  /* ---------- nav ---------- */
-  header.site{
-    position:sticky; top:0; z-index:40;
-    background:rgba(230,221,200,.92);
-    background:color-mix(in srgb, var(--paper) 88%, transparent);
-    backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
-  }
-  .nav{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  height:68px;
-}
-  .brand{ display:flex; align-items:center; gap:.6rem; text-decoration:none; }
-  .brand .mark{
-  width:46px;
-  height:46px;
-  border-radius:50%;
-  object-fit:cover;
-}
+    img,
+    svg {
+      display: block;
+    }
 
-.brand .name{
-  font-family:var(--disp);
-  font-size:1.45rem;
-}
-  .brand .name em{ font-style:normal; color:var(--moss); }
-  .nav-links{ display:flex; gap:1.7rem; list-style:none; }
-  .nav-links a{
-    text-decoration:none; font-weight:600; font-size:.95rem; color:var(--ink-soft);
-    padding:.3em 0; border-bottom:2px solid transparent; transition:color .15s, border-color .15s;
-  }
-  .nav-links a:hover{ color:var(--ink); border-color:var(--moss); }
-  .nav .btn{ padding:.55em 1.1em; font-size:.9rem; }
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
 
-  /* ---------- hero ---------- */
-  .hero{
-    min-height:calc(100svh - 68px);
-    display:grid;
-    align-items:center;
-    padding:44px 0 36px;
-    overflow:hidden;
-    background:
-      radial-gradient(circle at 78% 48%, rgba(100,217,77,.11), transparent 34%),
-      linear-gradient(180deg, rgba(230,221,200,.015), transparent 45%);
-  }
-  .hero-grid{
-    display:grid;
-    grid-template-columns:minmax(330px,.78fr) minmax(520px,1.35fr);
-    gap:18px;
-    align-items:center;
-  }
-  .hero-copy{ position:relative; z-index:2; max-width:570px; }
-  .hero h1{
-    max-width:11.5ch;
-    margin:.65rem 0 1.1rem;
-    font-size:clamp(3.2rem, 6.4vw, 6.15rem);
-    line-height:.94;
-    letter-spacing:-.035em;
-  }
-  .hero h1 .quiet{ color:var(--sand); }
-  .hero .lede{ max-width:44ch; font-size:1.12rem; }
-  .hero .lede strong{ color:var(--ink); }
-  .hero-art{
-    position:relative;
-    z-index:1;
-    width:min(860px, 66vw);
-    margin-left:-70px;
-    filter:drop-shadow(0 32px 52px rgba(0,0,0,.35));
-  }
-  .hero-art img{
-    width:100%;
-    height:auto;
-    object-fit:contain;
-  }
-  .hero-ctas{ display:flex; gap:.8rem; flex-wrap:wrap; margin:1.7rem 0 1.1rem; }
-  .hero-note{
-    font-family:var(--mono); font-size:.8rem; color:var(--stone); letter-spacing:.02em;
-  }
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--moss);
+    }
 
-  /* ---------- alert card ---------- */
-  .alert-card{
-    background:var(--card); border:1px solid var(--line); border-radius:var(--r);
-    box-shadow:0 22px 44px -26px rgba(46,42,32,.45);
-    overflow:hidden; max-width:430px; margin-left:auto;
-  }
-  .alert-top{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:12px 18px; border-bottom:1px solid var(--line);
-    font-family:var(--mono); font-size:.74rem; letter-spacing:.08em; color:var(--ink-soft);
-    background:linear-gradient(180deg, rgba(76,107,69,.10), transparent);
-  }
-  .pill{
-    display:inline-flex; align-items:center; gap:.45em;
-    font-family:var(--mono); font-size:.72rem; font-weight:600; letter-spacing:.08em;
-    padding:.3em .8em; border-radius:999px;
-  }
-  .pill-green{ background:rgba(76,107,69,.16); color:var(--moss-dark); }
-  .pill-tan{ background:rgba(139,133,120,.16); color:var(--ink-soft); }
-  .dot{ width:8px; height:8px; border-radius:50%; background:var(--moss); animation:breathe 3.2s ease-in-out infinite; }
-  @keyframes breathe{ 0%,100%{ transform:scale(1); opacity:1;} 50%{ transform:scale(.7); opacity:.55;} }
+    .dark .eyebrow {
+      color: var(--leaf);
+    }
 
-  .alert-body{ padding:20px 22px 8px; }
-  .alert-body .reason{ font-family:var(--disp); font-size:1.14rem; line-height:1.35; margin-bottom:.35rem; }
-  .alert-body .meta{ font-size:.86rem; color:var(--ink-soft); margin-bottom:1rem; }
-  .levels{ border-top:1px dashed var(--line); }
-  .level{
-    display:flex; justify-content:space-between; align-items:baseline;
-    padding:.62rem 0; border-bottom:1px dashed var(--line);
-    font-family:var(--mono); font-size:.9rem;
-  }
-  .level .lab{ color:var(--ink-soft); font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; }
-  .level .val{ font-weight:600; }
-  .level.invalid .val{ color:var(--clay); }
-  .alert-foot{
-    display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;
-    padding:13px 22px 16px; font-family:var(--mono); font-size:.72rem; color:var(--stone);
-  }
-  .note-badge{
-    display:inline-grid; place-items:center; width:19px; height:19px; border-radius:50%;
-    background:var(--moss); color:var(--paper); font-family:var(--mono); font-size:.66rem; font-weight:600;
-    flex:none;
-  }
+    h1,
+    h2,
+    h3 {
+      font-family: var(--disp);
+      font-weight: 400;
+      line-height: 1.12;
+      letter-spacing: -.01em;
+    }
 
-  /* ---------- engine strip ---------- */
-  .engine{
-    background:var(--paper-deep); border-block:1px solid var(--line);
-    padding:13px 0;
-  }
-  .engine .row{
-    display:flex; align-items:center; gap:1.6rem; flex-wrap:wrap;
-    font-family:var(--mono); font-size:.8rem; color:var(--ink-soft); letter-spacing:.03em;
-  }
-  .engine .row .live{ display:inline-flex; align-items:center; gap:.55em; color:var(--moss-dark); font-weight:600; }
-  .engine .row .good{ color:var(--moss-dark); }
+    h1 {
+      font-size: clamp(2.3rem, 5vw, 3.9rem);
+    }
 
-  /* ---------- sections ---------- */
-  .section{ padding:88px 0; }
-  .section-head{ max-width:640px; margin-bottom:44px; }
-  .section-head h2{ margin:.5rem 0 .8rem; }
+    h2 {
+      font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+    }
 
-  /* problem cards */
-  .trio{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
-  .fail{
-    background:var(--card); border:1px solid var(--line); border-radius:var(--r);
-    padding:26px 24px;
-  }
-  .fail .tag{
-    font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase;
-    color:var(--clay); display:block; margin-bottom:.9rem;
-  }
-  .fail h3{ margin-bottom:.5rem; }
-  .fail p{ color:var(--ink-soft); font-size:.96rem; }
-  .fail .quote{
-    font-family:var(--mono); font-size:.85rem; background:rgba(139,133,120,.12);
-    border-radius:8px; padding:.5em .8em; margin-top:.9rem; display:inline-block;
-  }
-  .replace{
-    margin-top:26px; font-size:1.02rem; color:var(--ink-soft); max-width:64ch;
-  }
-  .replace strong{ color:var(--ink); }
+    h3 {
+      font-size: 1.12rem;
+    }
 
-  /* anatomy */
-  .anatomy{ background:var(--paper-deep); border-block:1px solid var(--line); }
-  .anatomy-grid{ display:grid; grid-template-columns:.95fr 1.05fr; gap:56px; align-items:center; }
-  .anatomy .alert-card{ margin:0; }
-  .legend{ list-style:none; display:grid; gap:1.15rem; }
-  .legend li{ display:flex; gap:.85rem; align-items:flex-start; }
-  .legend h3{ font-size:1.05rem; margin-bottom:.15rem; }
-  .legend p{ color:var(--ink-soft); font-size:.95rem; }
+    .lede {
+      color: var(--ink-soft);
+      font-size: 1.08rem;
+      max-width: 56ch;
+    }
 
-  /* lifecycle */
-  .stages{ list-style:none; display:grid; grid-template-columns:repeat(5,1fr); gap:14px; counter-reset:stage; }
-  .stage{
-    background:var(--card); border:1px solid var(--line); border-radius:var(--r);
-    padding:20px 18px; position:relative; counter-increment:stage;
-  }
-  .stage::before{
-    content:counter(stage, decimal-leading-zero);
-    font-family:var(--mono); font-size:.72rem; color:var(--stone); letter-spacing:.1em;
-  }
-  .stage h3{ font-size:1rem; margin:.5rem 0 .35rem; }
-  .stage p{ font-size:.87rem; color:var(--ink-soft); }
-  .stage.ledger-stage{ background:var(--moss); border-color:var(--moss); color:var(--paper); }
-  .stage.ledger-stage p{ color:var(--card); }
-  .stage.ledger-stage::before{ color:var(--paper-deep); }
-  .stages-note{ margin-top:22px; font-size:.95rem; color:var(--ink-soft); }
-  .stages-note strong{ color:var(--ink); }
 
-  /* ---------- ledger (dark room) ---------- */
-  .dark{ background:var(--moss-deep); color:var(--sand); }
-  .ledger-grid{ display:grid; grid-template-columns:.85fr 1.15fr; gap:56px; align-items:start; }
-  .ledger-copy p{ color:var(--sand-soft); margin-bottom:1rem; font-size:1rem; }
-  .ledger-copy p strong{ color:var(--sand); }
-  .refuses{ list-style:none; margin-top:1.4rem; display:grid; gap:.55rem; }
-  .refuses li{
-    font-family:var(--mono); font-size:.8rem; color:#A8A78E; letter-spacing:.03em;
-    display:flex; gap:.6em; align-items:baseline;
-  }
-  .refuses li::before{ content:"×"; color:var(--clay-lt); font-weight:600; }
+    /* ---------- buttons ---------- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .55em;
+      font-family: var(--body);
+      font-weight: 700;
+      font-size: .98rem;
+      padding: .78em 1.35em;
+      border-radius: 999px;
+      text-decoration: none;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: transform .18s ease, background .18s ease, color .18s ease, border-color .18s ease;
+    }
 
-  .ledger-card{
-    background:#333F2C; border:1px solid var(--line-dark); border-radius:var(--r); overflow:hidden;
-  }
-  .ledger-head{
-    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;
-    padding:16px 20px; border-bottom:1px solid var(--line-dark);
-    font-family:var(--mono); font-size:.78rem; letter-spacing:.1em; color:var(--sand-soft);
-  }
-  .ledger-head .losses-first{ color:var(--clay-lt); }
-  table{ width:100%; border-collapse:collapse; font-family:var(--mono); font-size:.83rem; }
-  th{
-    text-align:left; font-weight:500; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase;
-    color:#A8A78E; padding:12px 20px; border-bottom:1px solid var(--line-dark);
-  }
-  td{ padding:11px 20px; border-bottom:1px solid rgba(230,221,200,.07); color:var(--sand); }
-  tr:last-child td{ border-bottom:none; }
-  td.r, th.r{ text-align:right; }
-  .res{ font-size:.7rem; font-weight:600; letter-spacing:.1em; padding:.25em .7em; border-radius:999px; }
-  .res-loss{ background:rgba(214,148,124,.16); color:var(--clay-lt); }
-  .res-win{ background:rgba(157,185,138,.16); color:var(--leaf); }
-  .res-flat{ background:rgba(230,221,200,.1); color:var(--sand-soft); }
-  td .neg{ color:var(--clay-lt); }
-  td .pos{ color:var(--leaf); }
-  .ledger-foot{
-    padding:15px 20px; border-top:1px solid var(--line-dark);
-    display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
-    font-family:var(--mono); font-size:.74rem; color:#A8A78E;
-  }
-  .ledger-foot .net{ color:var(--leaf); font-weight:600; }
-  .sample-note{ font-size:.68rem; color:#8B8A73; }
+    .btn:hover {
+      transform: translateY(-1px);
+    }
 
-  /* ---------- guardrails ---------- */
-  .guard-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
-  .rules{ list-style:none; display:flex; flex-wrap:wrap; gap:.6rem; margin-top:1.4rem; }
-  .rules li{
-    font-family:var(--mono); font-size:.8rem; font-weight:500;
-    border:1.5px solid var(--line); border-radius:999px; padding:.5em 1em; color:var(--ink-soft);
-    background:var(--card);
-  }
-  .rules li b{ color:var(--moss-dark); font-weight:600; }
-  .guard-cards{ display:grid; gap:18px; }
-  .guard-card{
-    background:var(--card); border:1px solid var(--line); border-left:4px solid var(--clay);
-    border-radius:var(--r); padding:20px 22px;
-    box-shadow:0 18px 36px -26px rgba(46,42,32,.4);
-  }
-  .guard-card.cool{ border-left-color:var(--stone); }
-  .guard-card .gtag{
-    font-family:var(--mono); font-size:.7rem; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--clay); display:block; margin-bottom:.55rem;
-  }
-  .guard-card.cool .gtag{ color:var(--stone); }
-  .guard-card h3{ margin-bottom:.35rem; }
-  .guard-card p{ font-size:.93rem; color:var(--ink-soft); }
-  .guard-card p b{ color:var(--ink); }
+    .btn:focus-visible {
+      outline: 3px solid var(--moss);
+      outline-offset: 3px;
+    }
 
-  /* ---------- what it isn't ---------- */
-  .isnt{ background:var(--paper-deep); border-block:1px solid var(--line); }
-  .isnt-list{ list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:0; border-top:1px solid var(--line); }
-  .isnt-list li{ padding:30px 26px 30px 0; border-bottom:1px solid var(--line); }
-  .isnt-list li:nth-child(odd){ border-right:1px solid var(--line); padding-right:36px; }
-  .isnt-list li:nth-child(even){ padding-left:36px; }
-  .isnt-list h3{ font-size:1.3rem; margin-bottom:.4rem; }
-  .isnt-list h3 .no{ color:var(--clay); }
-  .isnt-list p{ color:var(--ink-soft); font-size:.96rem; }
+    .btn-primary {
+      background: var(--moss);
+      color: var(--paper);
+    }
 
-  /* ---------- cta ---------- */
-  .cta{ text-align:center; }
-  .cta h2{ margin:.5rem auto .9rem; max-width:16ch; }
-  .cta .lede{ margin:0 auto 1.8rem; }
-  .cta .price-note{ font-family:var(--mono); font-size:.8rem; color:var(--stone); margin-top:1.1rem; }
+    .btn-primary:hover {
+      background: var(--moss-dark);
+    }
 
-  /* ---------- footer ---------- */
-  footer.site{ border-top:1px solid var(--line); padding:40px 0 52px; }
-  .foot-grid{ display:flex; justify-content:space-between; gap:32px; flex-wrap:wrap; }
-  .foot-brand{ display:flex; align-items:center; gap:.55rem; font-family:var(--disp); }
-  .foot-brand .mark{
-  width:46px;
-  height:46px;
-  border-radius:50%;
-  object-fit:cover;
-  transform:scale(1.12);
-}
+    /* ---------- nav ---------- */
+    header.site {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 40;
 
-.trademark{
-  font-family:var(--body);
-  font-size:.48em;
-  font-weight:600;
-  vertical-align:super;
-  margin-left:2px;
-  color:var(--sand-soft);
-}
-  .fine{ font-size:.8rem; color:var(--stone); max-width:62ch; margin-top:14px; }
-  .foot-links{ list-style:none; display:flex; gap:1.4rem; font-size:.86rem; }
-  .foot-links a{ color:var(--ink-soft); text-decoration:none; }
-  .foot-links a:hover{ color:var(--ink); text-decoration:underline; }
+      background: rgba(230, 221, 200, .92);
+      background: color-mix(in srgb, var(--paper) 88%, transparent);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
 
-  /* ---------- motion ---------- */
-  .reveal{ opacity:0; transform:translateY(16px); transition:opacity .7s ease, transform .7s ease; }
-  .reveal.in{ opacity:1; transform:none; }
-  .d1{ transition-delay:.08s; } .d2{ transition-delay:.16s; } .d3{ transition-delay:.24s; }
-  @media (prefers-reduced-motion: reduce){
-    html{ scroll-behavior:auto; }
-    .reveal{ opacity:1; transform:none; transition:none; }
-    .dot{ animation:none; }
-    .btn{ transition:none; }
-  }
+    main {
+      padding-top: 68px;
+    }
 
-  /* ---------- responsive ---------- */
-  @media (max-width: 960px){
-    .hero-grid, .anatomy-grid, .ledger-grid, .guard-grid{ grid-template-columns:1fr; gap:40px; }
-    .hero{ min-height:auto; padding:70px 0 34px; text-align:center; }
-    .hero-copy{ max-width:680px; margin:0 auto; }
-    .hero h1{ max-width:11.5ch; margin:.65rem auto 1.1rem; }
-    .hero .lede{ margin-inline:auto; }
-    .hero-ctas{ justify-content:center; }
-    .hero-art{ width:min(820px, 112vw); margin:-34px auto -24px; transform:translateX(2%); }
-    .alert-card{ margin-left:0; }
-    .trio{ grid-template-columns:1fr; }
-    .stages{ grid-template-columns:1fr 1fr; }
-    .stage.ledger-stage{ grid-column:1 / -1; }
-    .isnt-list{ grid-template-columns:1fr; }
-    .isnt-list li{ border-right:none !important; padding:26px 0 !important; }
-    .nav-links{ display:none; }
-    .section{ padding:64px 0; }
-    .ledger-card{ overflow-x:auto; }
-    table{ min-width:560px; }
-  }
-  @media (max-width: 560px){
-    .hero{ padding-top:54px; }
-    .hero h1{ font-size:clamp(3rem, 14vw, 4.15rem); }
-    .hero-art{ width:118vw; margin-top:-18px; }
-    .hero-note{ max-width:36ch; margin-inline:auto; }
-  }
-</style>
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      text-decoration: none;
+    }
+
+    .brand .mark {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .brand .name {
+      font-family: var(--disp);
+      font-size: 1.45rem;
+    }
+
+    .brand .name em {
+      font-style: normal;
+      color: var(--moss);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.7rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 600;
+      font-size: .95rem;
+      color: var(--ink-soft);
+      padding: .3em 0;
+      border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+
+    .nav-links a:hover {
+      color: var(--ink);
+      border-color: var(--moss);
+    }
+
+    .nav .btn {
+      padding: .55em 1.1em;
+      font-size: .9rem;
+    }
+
+    /* ---------- responsive header behavior ---------- */
+
+    header.site {
+      transform: translateY(0);
+      transition: transform .24s ease;
+      will-change: transform;
+    }
+
+    header.site.header-hidden {
+      transform: translateY(-100%);
+    }
+
+    .nav {
+      position: relative;
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 42px;
+      height: 42px;
+      padding: 9px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--card);
+      cursor: pointer;
+
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      border-radius: 999px;
+      background: var(--sand);
+      transition:
+        transform .2s ease,
+        opacity .2s ease;
+    }
+
+    header.site.menu-open .menu-toggle span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    header.site.menu-open .menu-toggle span:nth-child(2) {
+      opacity: 0;
+    }
+
+    header.site.menu-open .menu-toggle span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .mobile-contact {
+      display: none;
+    }
+
+    /* Prevent sticky header from covering anchor destinations */
+    section[id] {
+      scroll-margin-top: 84px;
+    }
+
+    /* ---------- hero ---------- */
+    .hero {
+      min-height: calc(100svh - 68px);
+      display: grid;
+      align-items: center;
+      padding: 44px 0 36px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 78% 48%, rgba(100, 217, 77, .11), transparent 34%),
+        linear-gradient(180deg, rgba(230, 221, 200, .015), transparent 45%);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(330px, .78fr) minmax(520px, 1.35fr);
+      gap: 18px;
+      align-items: center;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 2;
+      max-width: 570px;
+    }
+
+    .hero-explainer {
+      max-width: 46ch;
+      margin-top: .75rem;
+      color: var(--ink-soft);
+      font-size: .95rem;
+      line-height: 1.55;
+    }
+
+    .hero h1 {
+      max-width: 11.5ch;
+      margin: .65rem 0 .65rem;
+      font-size: clamp(3rem, 5.6vw, 5.4rem);
+      line-height: .94;
+      letter-spacing: -.035em;
+    }
+
+    .hero h1 .quiet {
+      color: var(--sand);
+    }
+
+    .hero .lede {
+      max-width: 44ch;
+      font-size: 2.8rem;
+      line-height: 1.25;
+    }
+
+    .hero .lede strong {
+      color: var(--ink);
+    }
+
+    .hero-art {
+      position: relative;
+      z-index: 1;
+      width: min(860px, 66vw);
+      margin-left: -70px;
+      filter: drop-shadow(0 32px 52px rgba(0, 0, 0, .35));
+    }
+
+    .hero-art img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: .8rem;
+      flex-wrap: wrap;
+      margin: 1.7rem 0 1.1rem;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--moss);
+      animation: breathe 3.2s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: scale(.7);
+        opacity: .55;
+      }
+    }
+
+
+    /* ==========================================================
+   SIGNAL IMAGE PREVIEW
+   ========================================================== */
+
+    .signal-preview-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .signal-preview-image {
+      display: block;
+      width: 100%;
+      max-width: 500px;
+      height: auto;
+      object-fit: contain;
+
+      border-radius: 22px;
+
+      filter: drop-shadow(0 24px 40px rgba(0, 0, 0, .35));
+    }
+
+    /* Right-side explanation */
+    .anatomy-copy h2 {
+      margin: .5rem 0 .8rem;
+    }
+
+    .anatomy-copy .lede {
+      margin-bottom: 1.6rem;
+    }
+
+    /* Mobile sizing */
+    @media (max-width:960px) {
+      .signal-preview-image {
+        max-width: 400px;
+      }
+
+      .hero-explainer {
+        margin-inline: auto;
+      }
+    }
+
+
+
+    .signal-badge {
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: var(--moss);
+      color: #111312;
+      font-family: var(--mono);
+      font-size: .82rem;
+      font-weight: 700;
+      flex: none;
+    }
+
+    /* ---------- engine strip ---------- */
+    .engine {
+      background: var(--paper-deep);
+      border-block: 1px solid var(--line);
+      padding: 18px 0;
+    }
+
+    .engine .row {
+      display: flex;
+      align-items: center;
+      gap: 1.6rem;
+      flex-wrap: wrap;
+      font-family: var(--mono);
+      font-size: .8rem;
+      color: var(--ink-soft);
+      letter-spacing: .03em;
+    }
+
+    .engine .row .live {
+      display: inline-flex;
+      align-items: center;
+      gap: .55em;
+      color: var(--moss-dark);
+      font-weight: 600;
+    }
+
+    /* ---------- sections ---------- */
+    .section {
+      padding: 88px 0;
+    }
+
+    .section-head {
+      max-width: 640px;
+      margin-bottom: 44px;
+    }
+
+    .section-head h2 {
+      margin: .5rem 0 .8rem;
+    }
+
+    /* problem cards */
+    .trio {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .fail {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 26px 24px;
+    }
+
+    .fail .tag {
+      font-family: var(--mono);
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--clay);
+      display: block;
+      margin-bottom: .9rem;
+    }
+
+    .fail h3 {
+      margin-bottom: .5rem;
+    }
+
+    .fail p {
+      color: var(--ink-soft);
+      font-size: .96rem;
+    }
+
+    .replace {
+      margin-top: 26px;
+      font-size: 1.02rem;
+      color: var(--ink-soft);
+      max-width: 64ch;
+    }
+
+    .replace strong {
+      color: var(--ink);
+    }
+
+    #how .section-head {
+      max-width: 780px;
+    }
+
+    #how .how-steps .tag {
+      color: var(--moss);
+    }
+
+    #how .how-steps h3 {
+      font-size: 1.25rem;
+      line-height: 1.35;
+    }
+
+    /* anatomy */
+    .anatomy {
+      background: var(--paper-deep);
+      border-block: 1px solid var(--line);
+    }
+
+    .anatomy-grid {
+      display: grid;
+      grid-template-columns: .95fr 1.05fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .legend {
+      list-style: none;
+      display: grid;
+      gap: 1.15rem;
+    }
+
+    .legend li {
+      display: flex;
+      gap: .85rem;
+      align-items: flex-start;
+    }
+
+    .legend h3 {
+      font-size: 1.05rem;
+      margin-bottom: .15rem;
+    }
+
+    .legend p {
+      color: var(--ink-soft);
+      font-size: .95rem;
+    }
+
+    /* ==========================================================
+   Market Monitoring / LIFECYCLE
+   ========================================================== */
+
+    .stages {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 16px;
+      counter-reset: stage;
+      align-items: stretch;
+    }
+
+    .stage {
+      position: relative;
+      counter-increment: stage;
+      min-height: 190px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+
+      padding: 22px 18px 20px;
+      border-radius: 22px;
+
+      background:
+        radial-gradient(circle at 50% 0%, rgba(100, 217, 77, .045), transparent 46%),
+        linear-gradient(180deg, rgba(255, 255, 255, .02), rgba(255, 255, 255, 0)),
+        var(--card);
+
+      border: 1px solid rgba(230, 221, 200, .12);
+
+      box-shadow:
+        0 14px 34px -26px rgba(0, 0, 0, .65),
+        inset 0 0 0 1px rgba(255, 255, 255, .015);
+
+      transition:
+        transform .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
+    }
+
+    .stage:hover {
+      transform: translateY(-2px);
+      border-color: rgba(100, 217, 77, .2);
+      box-shadow:
+        0 18px 40px -24px rgba(0, 0, 0, .78),
+        0 0 0 1px rgba(100, 217, 77, .05);
+    }
+
+    .stage::before {
+      content: counter(stage, decimal-leading-zero);
+      display: block;
+      margin-bottom: 14px;
+
+      font-family: var(--mono);
+      font-size: .74rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      color: var(--stone);
+    }
+
+    .stage h3 {
+      font-size: 1.04rem;
+      margin: 0 0 .65rem;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+
+    .stage p {
+      font-size: .96rem;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      max-width: 22ch;
+    }
+
+    /* desktop connector arrows */
+    .stage:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      top: 22px;
+      right: -12px;
+      z-index: 2;
+
+      font-family: var(--mono);
+      font-size: .95rem;
+      color: var(--sand-dark);
+    }
+
+    /* final destination card */
+    .stage.ledger-stage {
+      background:
+        linear-gradient(180deg, #6BDB4D 0%, #63D748 100%);
+      border-color: #6BDB4D;
+      color: #101210;
+
+      box-shadow:
+        0 20px 40px -24px rgba(100, 217, 77, .5),
+        inset 0 0 0 1px rgba(255, 255, 255, .08);
+    }
+
+    .stage.ledger-stage::before {
+      color: rgba(16, 18, 16, .58);
+    }
+
+    .stage.ledger-stage h3 {
+      color: #101210;
+    }
+
+    .stage.ledger-stage p {
+      color: rgba(16, 18, 16, .78);
+    }
+
+    /* supporting sentence under cards */
+    .stages-note {
+      margin-top: 26px;
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--ink-soft);
+      max-width: 78ch;
+    }
+
+    .stages-note strong {
+      color: var(--ink);
+    }
+
+    /* responsive */
+    @media (max-width: 960px) {
+      .stages {
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      .stage {
+        min-height: unset;
+      }
+
+      .stage.ledger-stage {
+        grid-column: 1 / -1;
+      }
+
+      .stage:not(:last-child)::after {
+        display: none;
+      }
+
+      .stage p {
+        max-width: none;
+      }
+    }
+
+
+
+    /* ---------- ledger (dark room) ---------- */
+    .dark {
+      background: var(--moss-deep);
+      color: var(--sand);
+    }
+
+    .ledger-grid {
+      display: grid;
+      grid-template-columns: .85fr 1.15fr;
+      gap: 56px;
+      align-items: start;
+    }
+
+    .ledger-copy p {
+      color: var(--sand-soft);
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    .ledger-copy p strong {
+      color: var(--sand);
+    }
+
+    .refuses {
+      list-style: none;
+      margin-top: 1.4rem;
+      display: grid;
+      gap: .55rem;
+    }
+
+    .refuses li {
+      font-family: var(--mono);
+      font-size: .8rem;
+      color: #A8A78E;
+      letter-spacing: .03em;
+      display: flex;
+      gap: .6em;
+      align-items: baseline;
+    }
+
+    .refuses li::before {
+      content: "✓";
+      color: var(--moss);
+      font-weight: 600;
+    }
+
+    .ledger-card {
+      background: #333F2C;
+      border: 1px solid var(--line-dark);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+
+    .ledger-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--line-dark);
+      font-family: var(--mono);
+      font-size: .78rem;
+      letter-spacing: .1em;
+      color: var(--sand-soft);
+    }
+
+    .ledger-head .preview-badge {
+      color: var(--clay-lt);
+      border: 1px solid rgba(230, 154, 136, .24);
+      background: rgba(230, 154, 136, .08);
+      padding: .3em .7em;
+      border-radius: 999px;
+      font-size: .68rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--mono);
+      font-size: .83rem;
+    }
+
+    th {
+      text-align: left;
+      font-weight: 500;
+      font-size: .68rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #A8A78E;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--line-dark);
+    }
+
+    td {
+      padding: 11px 20px;
+      border-bottom: 1px solid rgba(230, 221, 200, .07);
+      color: var(--sand);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    td.r,
+    th.r {
+      text-align: right;
+    }
+
+    .res {
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      padding: .25em .7em;
+      border-radius: 999px;
+    }
+
+    .res-loss {
+      background: rgba(214, 148, 124, .16);
+      color: var(--clay-lt);
+    }
+
+    .res-win {
+      background: rgba(157, 185, 138, .16);
+      color: var(--leaf);
+    }
+
+
+    td .neg {
+      color: var(--clay-lt);
+    }
+
+    td .pos {
+      color: var(--leaf);
+    }
+
+    .ledger-foot {
+      padding: 15px 20px;
+      border-top: 1px solid var(--line-dark);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-family: var(--mono);
+      font-size: .74rem;
+      color: #A8A78E;
+    }
+
+
+    .sample-note {
+      font-size: .68rem;
+      color: #8B8A73;
+    }
+
+    /* ---------- discipline ---------- */
+
+    .guard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .rules {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: .6rem;
+      margin-top: 1.4rem;
+    }
+
+    .rules li {
+      font-family: var(--mono);
+      font-size: .8rem;
+      font-weight: 500;
+      border: 1.5px solid var(--line);
+      border-radius: 999px;
+      padding: .5em 1em;
+      color: var(--ink-soft);
+      background: var(--card);
+    }
+
+    .rules li b {
+      color: var(--moss-dark);
+      font-weight: 600;
+    }
+
+    .guard-cards {
+      display: grid;
+      gap: 18px;
+    }
+
+    .guard-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--moss);
+      border-radius: var(--r);
+      padding: 20px 22px;
+      box-shadow: 0 18px 36px -26px rgba(46, 42, 32, .4);
+    }
+
+    .guard-card.cool {
+      border-left-color: var(--stone);
+    }
+
+    .guard-card .gtag {
+      font-family: var(--mono);
+      font-size: .7rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--moss);
+      display: block;
+      margin-bottom: .55rem;
+    }
+
+    .guard-card.cool .gtag {
+      color: var(--stone);
+    }
+
+    .guard-card h3 {
+      margin-bottom: .35rem;
+    }
+
+    .guard-card p {
+      font-size: .93rem;
+      color: var(--ink-soft);
+    }
+
+    .guard-card p b {
+      color: var(--ink);
+    }
+
+    /* ---------- roadmap ---------- */
+
+    .roadmap {
+      background: var(--paper-deep);
+      border-block: 1px solid var(--line);
+    }
+
+    .roadmap .section-head {
+      max-width: 720px;
+    }
+
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 36px;
+    }
+
+    .roadmap-card {
+      position: relative;
+      padding: 26px 24px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      min-height: 170px;
+
+      transition:
+        transform .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
+    }
+
+    .roadmap-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(100, 217, 77, .22);
+      box-shadow: 0 18px 40px -28px rgba(0, 0, 0, .75);
+    }
+
+    .roadmap-card .tag {
+      display: block;
+      margin-bottom: .8rem;
+
+      font-family: var(--mono);
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--moss);
+    }
+
+    .roadmap-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: .55rem;
+    }
+
+    .roadmap-card p {
+      color: var(--ink-soft);
+      font-size: .96rem;
+      line-height: 1.55;
+    }
+
+    .roadmap-note {
+      margin-top: 26px;
+      max-width: 72ch;
+      color: var(--stone);
+      font-size: .88rem;
+    }
+
+    .table-scroll-hint {
+      display: none;
+    }
+
+
+    /* ---------- cta ---------- */
+    .cta {
+      text-align: center;
+    }
+
+    .cta h2 {
+      margin: .5rem auto .9rem;
+      max-width: 16ch;
+    }
+
+    .cta .lede {
+      margin: 0 auto 1.8rem;
+    }
+
+    .cta .price-note {
+      font-family: var(--mono);
+      font-size: .8rem;
+      color: var(--stone);
+      margin-top: 1.1rem;
+    }
+
+    .cta .price-note a {
+      color: var(--moss-dark);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .cta .price-note a:hover {
+      text-decoration: underline;
+    }
+
+
+    /* ---------- footer ---------- */
+    footer.site {
+      border-top: 1px solid var(--line);
+      padding: 40px 0 52px;
+    }
+
+    .foot-grid {
+      display: flex;
+      justify-content: space-between;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .foot-brand {
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      font-family: var(--disp);
+    }
+
+    .foot-brand .mark {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      object-fit: cover;
+      transform: scale(1.12);
+    }
+
+    .trademark {
+      font-family: var(--body);
+      font-size: .48em;
+      font-weight: 600;
+      vertical-align: super;
+      margin-left: 2px;
+      color: var(--sand-soft);
+    }
+
+    .fine {
+      font-size: .8rem;
+      color: var(--stone);
+      max-width: 52ch;
+      margin: 14px auto 0;
+      line-height: 1.55;
+    }
+
+    /* ---------- desktop footer cleanup ---------- */
+    @media (min-width: 961px) {
+
+      .foot-grid {
+        justify-content: center;
+      }
+
+      .foot-grid>div {
+        width: 100%;
+        max-width: 680px;
+        text-align: center;
+      }
+
+      .foot-brand {
+        justify-content: center;
+      }
+
+      .fine {
+        margin: 14px auto 0;
+        max-width: 62ch;
+      }
+    }
+
+    /* ---------- motion ---------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .reveal.in {
+      opacity: 1;
+      transform: none;
+    }
+
+    .d1 {
+      transition-delay: .08s;
+    }
+
+    .d2 {
+      transition-delay: .16s;
+    }
+
+    .d3 {
+      transition-delay: .24s;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+
+      .dot {
+        animation: none;
+      }
+
+      .btn {
+        transition: none;
+      }
+    }
+
+    /* ---------- responsive ---------- */
+    @media (max-width: 960px) {
+
+      .hero-grid,
+      .anatomy-grid,
+      .ledger-grid,
+      .guard-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .ledger-grid {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .ledger-grid>* {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .ledger-card {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 70px 0 34px;
+        text-align: center;
+      }
+
+      .hero-copy {
+        max-width: 680px;
+        margin: 0 auto;
+      }
+
+      .hero h1 {
+        max-width: 11.5ch;
+        margin: .65rem auto 1.1rem;
+      }
+
+      .hero .lede {
+        margin-inline: auto;
+      }
+
+      .hero-ctas {
+        justify-content: center;
+      }
+
+      .hero-art {
+        width: min(820px, 112vw);
+        margin: -34px auto -24px;
+        transform: translateX(2%);
+      }
+
+      .trio {
+        grid-template-columns: 1fr;
+      }
+
+      .stages {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stage.ledger-stage {
+        grid-column: 1 / -1;
+      }
+
+
+      .nav .nav-contact {
+        display: none;
+      }
+
+      .menu-toggle {
+        display: inline-flex;
+      }
+
+      .mobile-contact {
+        display: block;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        right: 0;
+
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+
+        padding: 10px;
+
+        background: var(--paper-deep);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+
+        box-shadow: 0 18px 44px -20px rgba(0, 0, 0, .75);
+
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+
+        transform: translateY(-8px);
+
+        transition:
+          opacity .18s ease,
+          transform .18s ease,
+          visibility .18s ease;
+      }
+
+      header.site.menu-open .nav-links {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+
+      .nav-links li {
+        width: 100%;
+      }
+
+      .nav-links a {
+        display: block;
+        width: 100%;
+        padding: .8rem .9rem;
+
+        border: 0;
+        border-radius: 10px;
+      }
+
+      .nav-links a:hover {
+        background: rgba(100, 217, 77, .07);
+        border-color: transparent;
+      }
+
+      .mobile-contact a {
+        color: var(--moss);
+      }
+
+      .section {
+        padding: 64px 0;
+      }
+
+      .ledger-card {
+        overflow-x: auto;
+      }
+
+      table {
+        min-width: 560px;
+      }
+    }
+
+    /* ==========================================================
+   MOBILE — PHONES
+   ========================================================== */
+    @media (max-width: 560px) {
+
+      /* ---------- nav ---------- */
+
+      .nav {
+        height: 62px;
+      }
+
+      .brand {
+        gap: .45rem;
+      }
+
+      .brand .mark {
+        width: 38px;
+        height: 38px;
+      }
+
+      .brand .name {
+        font-size: 1.2rem;
+      }
+
+      .nav .btn {
+        font-size: .8rem;
+        padding: .5em .9em;
+      }
+
+
+      /* ---------- hero ---------- */
+
+      .hero-grid {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .hero-grid>* {
+        min-width: 0;
+      }
+
+      .hero-copy {
+        width: 100%;
+      }
+
+      .hero {
+        padding-top: 54px;
+      }
+
+      .hero h1 {
+        font-size: clamp(3rem, 14vw, 4.15rem);
+      }
+
+      .hero .lede {
+        font-size: clamp(1.65rem, 7.5vw, 2.15rem);
+        line-height: 1.15;
+        max-width: 16ch;
+        margin-inline: auto;
+      }
+
+      .hero-explainer {
+        max-width: 34ch;
+        font-size: .92rem;
+        line-height: 1.5;
+      }
+
+      .hero-ctas {
+        margin-top: 1.35rem;
+      }
+
+      .hero-art {
+        width: 118%;
+        max-width: none;
+        margin: -18px 0 -24px;
+        justify-self: center;
+        transform: none;
+      }
+
+
+      /* ---------- general section spacing ---------- */
+
+      .section-head {
+        margin-bottom: 32px;
+      }
+
+      .trio {
+        gap: 14px;
+      }
+
+
+      /* ---------- engine strip ---------- */
+
+      .engine {
+        padding: 16px 0;
+      }
+
+      .engine .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: .8rem .5rem;
+        justify-items: center;
+        text-align: center;
+      }
+
+      .engine .row>span:nth-child(even) {
+        display: none;
+      }
+
+      .engine .row>span:nth-child(odd) {
+        width: 100%;
+        justify-content: center;
+        font-size: .68rem;
+        line-height: 1.25;
+      }
+
+
+      /* ---------- lifecycle ---------- */
+
+      .stages {
+        grid-template-columns: 1fr;
+      }
+
+      .stage {
+        padding: 20px 16px 18px;
+        border-radius: 18px;
+      }
+
+
+      /* ---------- signal outcomes ---------- */
+
+      .table-scroll-hint {
+        display: block;
+        padding: 9px 14px;
+        border-bottom: 1px solid var(--line-dark);
+        font-family: var(--mono);
+        font-size: .62rem;
+        letter-spacing: .04em;
+        color: #A8A78E;
+      }
+
+      .ledger-head {
+        align-items: flex-start;
+      }
+
+      .ledger-head .preview-badge {
+        font-size: .62rem;
+      }
+
+
+      /* ---------- roadmap ---------- */
+
+      .roadmap-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        margin-top: 28px;
+      }
+
+      .roadmap-card {
+        min-height: 0;
+        padding: 22px 20px;
+      }
+
+      .roadmap-card .tag {
+        margin-bottom: .65rem;
+      }
+
+      .roadmap-note {
+        margin-top: 20px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- ===================== NAV ===================== -->
-<header class="site">
-  <div class="wrap nav">
-    <a class="brand" href="#top" aria-label="MarketSloth home">
-      <img class="mark" src="assets/MarketSloth logomark nobackground beige.png" alt="" aria-hidden="true"/>
-      <span class="name">Market<em>Sloth</em></span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#how">How it works</a></li>
-      <li><a href="#alert">The alert</a></li>
-      <li><a href="#ledger">The ledger</a></li>
-      <li><a href="#guardrails">Guardrails</a></li>
-    </ul>
-    <a class="btn btn-primary" href="mailto:marketslothcompany@gmail.com">Get in touch</a>
-  </div>
-</header>
+  <!-- ===================== NAV ===================== -->
+  <header class="site">
+    <div class="wrap nav">
 
-<main id="top">
+      <a class="brand" href="#top" aria-label="MarketSloth home">
+        <img class="mark" src="assets/MarketSloth logomark nobackground beige.png" alt="" aria-hidden="true" />
+        <span class="name">Market<em>Sloth</em></span>
+      </a>
 
-  <!-- ===================== HERO ===================== -->
-  <section class="hero">
-    <div class="wrap hero-grid">
-      <div class="hero-copy reveal">
-        <span class="eyebrow">Your eyes on the market</span>
-        <h1>You can just <span class="quiet">hang around.</span></h1>
-        <h1 class="lede"><strong>We’ll watch the market for you.</strong></h1>
-        <div class="hero-ctas">
-          <a class="btn btn-primary" href="mailto:marketslothcompany@gmail.com?subject=MarketSloth%20Early%20Access">Get early access</a>
-          <a class="btn btn-ghost" href="#how">See how it works</a>
-        </div>
-        <!-- <p class="hero-note">Calm alerts. Clear decisions. No constant chart-watching.</p> -->
-      </div>
+      <ul class="nav-links" id="primary-nav">
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#alert">The alert</a></li>
+        <li><a href="#ledger">Signal outcomes</a></li>
+        <li><a href="#discipline">Discipline</a></li>
+        <li><a href="#roadmap">Roadmap</a></li>
 
-      <div class="hero-art reveal d2">
-        <img src="assets/Market Sloth Landing Page Art Chart Realistic.png" alt="A relaxed sloth hanging from a rising green market candlestick surrounded by jungle plants" />
-      </div>
+        <li class="mobile-contact">
+          <a href="#contact">Get in touch</a>
+        </li>
+      </ul>
+
+      <a class="btn btn-primary nav-contact" href="#contact">
+        Get in touch
+      </a>
+
+      <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false"
+        aria-controls="primary-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
     </div>
-  </section>
+  </header>
 
-  <!-- ===================== ENGINE STRIP ===================== -->
-  <div class="engine" aria-label="Engine status">
-    <div class="wrap row">
-      <span class="live"><span class="dot"></span>ENGINE WATCHING</span>
-      <span>14 tickers · every session</span>
-      <span>last scan: 2 min ago</span>
-      <span>alerts today: <b class="good">0</b> — silence means nothing was worth your attention.</span>
-    </div>
-  </div>
+  <main id="top">
 
-  <!-- ===================== PROBLEM ===================== -->
-  <section class="section" id="how">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow">Why you're losing to the market</span>
-        <h2>Not intelligence. Behavior.</h2>
-        <p class="lede">Every existing option asks you to become something you're not: a chart scientist, a hype reader, or a person with infinite self-control at 3:47 PM.</p>
-      </div>
-      <div class="trio">
-        <article class="fail reveal">
-          <span class="tag">Option one</span>
-          <h3>Learn TradingView</h3>
-          <p>Months of studying indicators before you can write a single useful alert. The expertise becomes your unpaid second job.</p>
-        </article>
-        <article class="fail reveal d1">
-          <span class="tag">Option two</span>
-          <h3>Join an alert Discord</h3>
-          <p>No reasoning, no follow-up, and no accountability when it goes wrong. Just this:</p>
-          <span class="quote">SPY 676C 🚀🚀</span>
-        </article>
-        <article class="fail reveal d2">
-          <span class="tag">Option three</span>
-          <h3>Watch it yourself</h3>
-          <p>Chart-glancing during work meetings. FOMO-buying green candles. Revenge-trading red ones. Holding losers out of hope.</p>
-        </article>
-      </div>
-      <p class="replace reveal">MarketSloth replaces all three: <strong>the expertise</strong> (it knows what a setup looks like), <strong>the vigilance</strong> (it never looks away), and <strong>the missing self-control</strong> (it enforces the rules you set on your best day, during your worst one).</p>
-    </div>
-  </section>
+    <!-- ===================== HERO ===================== -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy reveal">
+          <h1>You <span class="quiet">hang around.</span></h1>
 
-  <!-- ===================== ANATOMY OF AN ALERT ===================== -->
-  <section class="section anatomy" id="alert">
-    <div class="wrap anatomy-grid">
-      <div class="reveal">
-        <div class="alert-card" role="img" aria-label="Annotated MarketSloth alert for QQQ">
-          <div class="alert-top">
-            <span class="pill pill-green"><span class="dot"></span>CONFIRMED</span>
-            <span>INTRADAY&nbsp;·&nbsp;STRENGTH ●●●●</span>
+          <h2 class="lede">
+            <strong>We’ll watch the market for you.</strong>
+          </h2>
+
+          <p class="hero-explainer">
+            Market monitoring, clear trade setups, and outcome tracking —
+            without living on the charts.
+          </p>
+
+          <div class="hero-ctas">
+            <a class="btn btn-primary" href="#how">See how it works</a>
           </div>
-          <div class="alert-body">
-            <p class="reason"><span class="note-badge" style="display:inline-grid;vertical-align:2px;margin-right:.4em;">1</span>QQQ — reclaim of the morning range high after a failed breakdown.</p>
-            <p class="meta"><span class="note-badge" style="display:inline-grid;vertical-align:2px;margin-right:.4em;">2</span>Usually resolves within the session.</p>
-            <div class="levels">
-              <div class="level"><span class="lab"><span class="note-badge" style="display:inline-grid;vertical-align:-4px;margin-right:.5em;">3</span>Entry zone</span><span class="val">598.40 – 599.10</span></div>
-              <div class="level"><span class="lab">Target 1</span><span class="val">601.80</span></div>
-              <div class="level"><span class="lab">Target 2</span><span class="val">604.20</span></div>
-              <div class="level invalid"><span class="lab">Invalid below</span><span class="val">596.90</span></div>
+        </div>
+
+        <div class="hero-art reveal d2">
+          <img src="assets/Market Sloth Landing Page Art Chart Realistic.png"
+            alt="A relaxed sloth hanging from a rising green market candlestick surrounded by jungle plants" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ENGINE STRIP ===================== -->
+    <div class="engine" aria-label="How MarketSloth works">
+      <div class="wrap row">
+        <span class="live">
+          <span class="dot"></span>
+          MARKET MONITORED
+        </span>
+        <span>→</span>
+        <span>SETUP CONFIRMED</span>
+        <span>→</span>
+        <span>ALERT DELIVERED</span>
+        <span>→</span>
+        <span>OUTCOME TRACKED</span>
+      </div>
+    </div>
+
+    <!-- ===================== HOW IT WORKS ===================== -->
+    <section class="section" id="how" aria-labelledby="how-title">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">What MarketSloth does · How it works</span>
+          <h2 id="how-title">Less FOMO<br>More clarity when it matters.</h2>
+          <p class="lede">MarketSloth is a market-monitoring and alert platform that turns market data into clear trade
+            setups, helping you stay informed without spending your day watching charts.</p>
+        </div>
+        <div class="trio how-steps">
+          <article class="fail reveal">
+            <span class="tag">01 / We watch</span>
+            <h3>Market monitoring, handled.</h3>
+            <p>Our strategies analyze price movement and technical indicators across supported stocks and ETFs, looking
+              for conditions that meet a defined setup.</p>
+          </article>
+          <article class="fail reveal d1">
+            <span class="tag">02 / You get the context</span>
+            <h3>A setup you can evaluate.</h3>
+            <p>When a setup qualifies, MarketSloth sends an alert with its direction, strategy, price targets, and stop
+              loss. You can review the opportunity and its boundaries together.</p>
+          </article>
+          <article class="fail reveal d2">
+            <span class="tag">03 / You stay in control</span>
+            <h3>Your attention. Your decision.</h3>
+            <p>Decide whether the setup fits your own plan and risk limits. Take action through your broker or let it
+              pass, with the final decision always yours.</p>
+          </article>
+        </div>
+        <p class="replace reveal"><strong>We do the watching. You make the call.</strong> Less screen time, clearer
+          information, and more room for the rest of your day.</p>
+      </div>
+    </section>
+
+    <!-- ===================== ANATOMY OF AN ALERT ===================== -->
+    <section class="section anatomy" id="alert">
+      <div class="wrap anatomy-grid">
+
+        <div class="reveal signal-preview-wrap">
+          <div>
+            <img class="signal-preview-image" src="assets/Marketsloth Signal Example.png"
+              alt="Example MarketSloth call signal for SPY" />
+
+            <p class="sample-note" style="margin-top:10px; max-width:500px;">
+              Example signal for illustration. Prices shown refer to the underlying
+              stock or ETF, not an options contract.
+            </p>
+          </div>
+        </div>
+
+        <!-- EXPLANATION -->
+        <div class="reveal d1 anatomy-copy">
+
+          <span class="eyebrow">
+            Beginner-friendly by design
+          </span>
+
+          <h2>
+            Built to be clear at a glance.
+          </h2>
+
+          <p class="lede">
+            Each MarketSloth signal brings the setup, price levels,
+            strategy, and supporting market context together in one view —
+            enough information to understand what was detected without
+            spending your day studying charts.
+          </p>
+
+
+          <ul class="legend">
+
+            <li>
+              <span class="signal-badge">1</span>
+
+              <div>
+                <h3>
+                  Know exactly what was flagged
+                </h3>
+
+                <p>
+                  The signal direction and ticker immediately show you
+                  which market opportunity MarketSloth detected.
+                </p>
+              </div>
+            </li>
+
+
+            <li>
+              <span class="signal-badge">2</span>
+
+              <div>
+                <h3>
+                  See the opportunity and the risk together
+                </h3>
+
+                <p>
+                  The stock price at signal time, targets, and stop-loss level describe the setup before you decide
+                  whether it fits your own plan.
+                </p>
+              </div>
+            </li>
+
+
+            <li>
+              <span class="signal-badge">3</span>
+
+              <div>
+                <h3>
+                  Understand what created the signal
+                </h3>
+
+                <p>
+                  The strategy label identifies which MarketSloth logic
+                  detected the opportunity.
+                </p>
+              </div>
+            </li>
+
+
+            <li>
+              <span class="signal-badge">4</span>
+
+              <div>
+                <h3>
+                  Get supporting context and timing
+                </h3>
+
+                <p>
+                  Volume, MACD, RSI, ATR, and the timestamp provide
+                  additional context around the market conditions when
+                  the signal appeared.
+                </p>
+              </div>
+            </li>
+
+          </ul>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================== LIFECYCLE ===================== -->
+    <section class="section">
+      <div class="wrap">
+
+        <div class="section-head reveal">
+          <span class="eyebrow">Market Monitoring</span>
+
+          <h2>The alert is just the start.</h2>
+
+          <p class="lede">
+            MarketSloth reviews available market data after each signal to evaluate
+            whether its targets or stop-loss level were reached.
+          </p>
+        </div>
+
+        <ol class="stages">
+
+          <li class="stage reveal">
+            <h3>Developing</h3>
+            <p>A setup is forming. No alert yet.</p>
+          </li>
+
+          <li class="stage reveal d1">
+            <h3>Confirmed</h3>
+            <p>The setup qualifies. Alert sent.</p>
+          </li>
+
+          <li class="stage reveal d2">
+            <h3>Outcome reviewed</h3>
+            <p>Available price data is checked against the signal’s levels.</p>
+          </li>
+
+          <li class="stage reveal d3">
+            <h3>Outcome classified</h3>
+            <p>Target, stop-loss, or unresolved status recorded.</p>
+          </li>
+
+          <li class="stage ledger-stage reveal d3">
+            <h3>Recorded</h3>
+            <p>The outcome is added to the signal history.</p>
+          </li>
+
+        </ol>
+
+        <p class="stages-note reveal">
+          <strong>Signal outcomes are evaluated independently of whether you take
+            the trade.</strong>
+          Incomplete data can leave an outcome unresolved.
+        </p>
+
+      </div>
+    </section>
+
+    <!-- ===================== LEDGER (dark) ===================== -->
+    <section class="section dark" id="ledger">
+      <div class="wrap ledger-grid">
+        <div class="ledger-copy reveal">
+          <span class="eyebrow">Trust</span>
+
+          <h2 style="margin:.5rem 0 1rem;">
+            Every signal leaves a record.
+          </h2>
+
+          <p>
+            MarketSloth records generated signals and evaluates their outcomes
+            using available market data.
+            <strong>Signal outcomes describe the setup, not your actual trading returns.</strong>
+          </p>
+
+          <p>
+            The goal is simple: measure signals the same way they were sent,
+            not just the ones that worked. As our live history grows, those
+            outcomes become the foundation for transparent performance reporting.
+          </p>
+
+          <ul class="refuses">
+            <li>signals timestamped when generated</li>
+            <li>original targets and stop-loss levels retained for review</li>
+            <li>favorable and unfavorable outcomes included</li>
+            <li>data coverage and unresolved outcomes identified in reporting</li>
+          </ul>
+        </div>
+
+        <div class="reveal d1">
+          <p class="table-scroll-hint">
+            Swipe to see the full table →
+          </p>
+          <div class="ledger-card">
+            <div class="ledger-head">
+              <span>SIGNAL OUTCOMES — PREVIEW</span>
+              <span class="preview-badge">ILLUSTRATIVE DATA</span>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Ticker</th>
+                  <th>Style</th>
+                  <th>Result</th>
+                  <th class="r">Outcome</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Jun 03</td>
+                  <td>NVDA</td>
+                  <td>Swing</td>
+                  <td><span class="res res-loss">STOP LOSS</span></td>
+                  <td class="r"><span class="neg">−1.0R</span></td>
+                </tr>
+
+                <tr>
+                  <td>Jun 11</td>
+                  <td>SPY</td>
+                  <td>Intraday</td>
+                  <td><span class="res res-loss">STOP LOSS</span></td>
+                  <td class="r"><span class="neg">−1.0R</span></td>
+                </tr>
+
+                <tr>
+                  <td>Jun 24</td>
+                  <td>TSLA</td>
+                  <td>Swing</td>
+                  <td><span class="res res-loss">STOP LOSS</span></td>
+                  <td class="r"><span class="neg">−1.0R</span></td>
+                </tr>
+
+                <tr>
+                  <td>Jun 17</td>
+                  <td>AMD</td>
+                  <td>Swing</td>
+                  <td><span class="res res-loss">LOSS</span></td>
+                  <td class="r"><span class="neg">−1.0R</span></td>
+                </tr>
+                <tr>
+                  <td>Jun 05</td>
+                  <td>QQQ</td>
+                  <td>Swing</td>
+                  <td><span class="res res-win">T2 HIT</span></td>
+                  <td class="r"><span class="pos">+2.1R</span></td>
+                </tr>
+                <tr>
+                  <td>Jun 09</td>
+                  <td>SPY</td>
+                  <td>Intraday</td>
+                  <td><span class="res res-win">T1 HIT</span></td>
+                  <td class="r"><span class="pos">+1.2R</span></td>
+                </tr>
+                <tr>
+                  <td>Jun 12</td>
+                  <td>MSFT</td>
+                  <td>Swing</td>
+                  <td><span class="res res-win">T1 HIT</span></td>
+                  <td class="r"><span class="pos">+1.4R</span></td>
+                </tr>
+                <tr>
+                  <td>Jun 18</td>
+                  <td>SPY</td>
+                  <td>Swing</td>
+                  <td><span class="res res-win">T2 HIT</span></td>
+                  <td class="r"><span class="pos">+2.4R</span></td>
+                </tr>
+                <tr>
+                  <td>Jun 26</td>
+                  <td>QQQ</td>
+                  <td>Intraday</td>
+                  <td><span class="res res-win">T1 HIT</span></td>
+                  <td class="r"><span class="pos">+1.1R</span></td>
+                </tr>
+                <tr>
+                  <td>Jun 30</td>
+                  <td>NVDA</td>
+                  <td>Swing</td>
+                  <td><span class="res res-win">T1 HIT</span></td>
+                  <td class="r"><span class="pos">+1.3R</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="ledger-foot">
+              <span>10 example signals · 6 wins · 4 losses</span>
+              <span>example outcome format</span>
             </div>
           </div>
-          <div class="alert-foot">
-            <span><span class="note-badge" style="display:inline-grid;vertical-align:-4px;margin-right:.5em;">4</span>signal 10:17:04 ET</span>
-            <span>delivered 10:17:22 ET</span>
-          </div>
+          <p class="sample-note" style="margin-top:10px;">
+            Illustrative interface preview — results shown are examples, not live
+            MarketSloth performance. Public reporting will be built from the live
+            signal history.
+          </p>
         </div>
       </div>
+    </section>
+    <!-- ===================== DISCIPLINE ===================== -->
+    <section class="section" id="discipline">
+      <div class="wrap guard-grid">
 
-      <div class="reveal d1">
-        <span class="eyebrow">Ease of use</span>
-        <h2 style="margin:.5rem 0 .8rem;">Written for a human. Read in ten seconds.</h2>
-        <p class="lede" style="margin-bottom:1.6rem;">You never see an RSI setting and never learn what MACD stands for — that vocabulary lives inside the engine. Your complexity ceiling is a short message and a yes/no decision.</p>
-        <ul class="legend">
-          <li><span class="note-badge">1</span><div><h3>The setup and why, in one sentence</h3><p>Plain language. If it can't be said simply, it isn't sent.</p></div></li>
-          <li><span class="note-badge">2</span><div><h3>How strong, and how long it takes</h3><p>Signal strength plus the typical time this kind of setup needs to resolve.</p></div></li>
-          <li><span class="note-badge">3</span><div><h3>The three numbers that matter</h3><p>Entry zone, targets, and the invalidation level — printed on every alert, because failure is normal.</p></div></li>
-          <li><span class="note-badge">4</span><div><h3>Both timestamps, always</h3><p>When the signal occurred and when it was sent. Freshness is never in doubt.</p></div></li>
-        </ul>
-      </div>
-    </div>
-  </section>
+        <div class="reveal">
+          <span class="eyebrow">Discipline</span>
 
-  <!-- ===================== LIFECYCLE ===================== -->
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow">Passive tracking</span>
-        <h2>No signal is announced and abandoned.</h2>
-        <p class="lede">Unlike every alert service on the market, MarketSloth's attention doesn't end when the alert is sent. Each opportunity is tracked as a living thing, through its whole life.</p>
-      </div>
-      <ol class="stages">
-        <li class="stage reveal"><h3>Developing</h3><p>The engine spots a setup forming. You hear nothing yet — that's the point.</p></li>
-        <li class="stage reveal d1"><h3>Confirmed</h3><p>Conditions line up. One plain-language alert, timestamped twice.</p></li>
-        <li class="stage reveal d2"><h3>Tracked live</h3><p>Target-1 hit, runner guidance, invalidation warnings — as they happen.</p></li>
-        <li class="stage reveal d3"><h3>Resolved</h3><p>Target, stop, or expired. Win or lose, the outcome is recorded.</p></li>
-        <li class="stage ledger-stage reveal d3"><h3>On the ledger</h3><p>Into the public monthly report. Losses first, if anything.</p></li>
-      </ol>
-      <p class="stages-note reveal"><strong>Took the trade?</strong> You're told when the first target hits and when the setup dies. <strong>Skipped it?</strong> You still see how it resolved — that's how you calibrate whether to trust the next one.</p>
-    </div>
-  </section>
+          <h2 style="margin:.5rem 0 .9rem;">
+            See the upside. Know the downside.
+          </h2>
 
-  <!-- ===================== LEDGER (dark) ===================== -->
-  <section class="section dark" id="ledger">
-    <div class="wrap ledger-grid">
-      <div class="ledger-copy reveal">
-        <span class="eyebrow">Trust</span>
-        <h2 style="margin:.5rem 0 1rem;">The alert service that shows you its losses.</h2>
-        <p>Every subscription trading service asks you to take performance on faith. MarketSloth is built so <strong>faith is never required</strong>.</p>
-        <p>Every signal resolves into a public monthly report — targets hit, stops hit, expired setups, all of it. The receipts are contemporaneous and complete, not cherry-picked screenshots. Verify before you ever commit a dollar, and every month after launch.</p>
-        <ul class="refuses">
-          <li>no win-rate promises</li>
-          <li>no "last chance" urgency</li>
-          <li>no simulated scarcity</li>
-          <li>never touches your money</li>
-        </ul>
-      </div>
+          <p class="lede">
+            Every MarketSloth signal arrives with its targets and stop loss already defined.
+            The opportunity and the risk show up together.
+          </p>
 
-      <div class="reveal d1">
-        <div class="ledger-card">
-          <div class="ledger-head">
-            <span>PUBLIC LEDGER — PREVIEW</span>
-            <span class="losses-first">LOSSES FIRST. ALWAYS.</span>
-          </div>
-          <table>
-            <thead>
-              <tr><th>Date</th><th>Ticker</th><th>Style</th><th>Result</th><th class="r">Outcome</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Jun 03</td><td>NVDA</td><td>Swing</td><td><span class="res res-loss">STOPPED</span></td><td class="r"><span class="neg">−1.0R</span></td></tr>
-              <tr><td>Jun 11</td><td>SPY</td><td>Intraday</td><td><span class="res res-loss">STOPPED</span></td><td class="r"><span class="neg">−1.0R</span></td></tr>
-              <tr><td>Jun 24</td><td>TSLA</td><td>Swing</td><td><span class="res res-loss">STOPPED</span></td><td class="r"><span class="neg">−1.0R</span></td></tr>
-              <tr><td>Jun 17</td><td>AMD</td><td>Swing</td><td><span class="res res-flat">EXPIRED</span></td><td class="r">0.0R</td></tr>
-              <tr><td>Jun 05</td><td>QQQ</td><td>Swing</td><td><span class="res res-win">T2 HIT</span></td><td class="r"><span class="pos">+2.1R</span></td></tr>
-              <tr><td>Jun 09</td><td>SPY</td><td>Intraday</td><td><span class="res res-win">T1 HIT</span></td><td class="r"><span class="pos">+1.2R</span></td></tr>
-              <tr><td>Jun 12</td><td>MSFT</td><td>Swing</td><td><span class="res res-win">T1 HIT</span></td><td class="r"><span class="pos">+1.4R</span></td></tr>
-              <tr><td>Jun 18</td><td>SPY</td><td>Swing</td><td><span class="res res-win">T2 HIT</span></td><td class="r"><span class="pos">+2.4R</span></td></tr>
-              <tr><td>Jun 26</td><td>QQQ</td><td>Intraday</td><td><span class="res res-win">T1 HIT</span></td><td class="r"><span class="pos">+1.1R</span></td></tr>
-              <tr><td>Jun 30</td><td>NVDA</td><td>Swing</td><td><span class="res res-win">T1 HIT</span></td><td class="r"><span class="pos">+1.3R</span></td></tr>
-            </tbody>
-          </table>
-          <div class="ledger-foot">
-            <span>10 signals · 6 targets · 3 stops · 1 expired · <span class="net">net +6.5R</span></span>
-            <span>every row links to its original timestamped alert</span>
-          </div>
+          <ul class="rules" aria-label="Signal discipline">
+            <li>Defined <b>targets</b></li>
+            <li>Defined <b>stop loss</b></li>
+            <li>Clear <b>signal direction</b></li>
+            <li>You make the <b>final call</b></li>
+          </ul>
         </div>
-        <p class="sample-note" style="margin-top:10px;">Some months will be negative. Those get published too. (Illustrative preview — this is what the ledger will look like at launch.)</p>
+
+        <div class="guard-cards">
+
+          <article class="guard-card reveal d1">
+            <span class="gtag">Before the trade</span>
+            <h3>The boundaries are already there.</h3>
+            <p>
+              Targets show where the setup is aiming.
+              The stop loss shows where the idea breaks.
+            </p>
+          </article>
+
+          <article class="guard-card cool reveal d2">
+            <span class="gtag">Your decision</span>
+            <h3>No chasing required.</h3>
+            <p>
+              Review the setup, compare it to your own risk limits,
+              and decide whether it deserves your capital.
+            </p>
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================== ROADMAP ===================== -->
+    <section class="section roadmap" id="roadmap">
+      <div class="wrap">
+
+        <div class="section-head reveal">
+          <span class="eyebrow">More to come</span>
+
+          <h2>
+            Market watching is only the beginning.
+          </h2>
+
+          <p class="lede">
+            MarketSloth is starting with clear signals, defined price levels,
+            and outcome tracking. From there, we're building toward
+            a more personalized market-monitoring experience.
+          </p>
+        </div>
+
+        <div class="roadmap-grid">
+
+          <article class="roadmap-card reveal">
+            <span class="tag">Personal watchlists</span>
+            <h3>Watch what matters to you.</h3>
+            <p>
+              Build around the stocks, ETFs, and markets you actually care about.
+            </p>
+          </article>
+
+          <article class="roadmap-card reveal d1">
+            <span class="tag">Options context</span>
+            <h3>Understand the option, not just the ticker.</h3>
+            <p>
+              Add contract-level data, Greeks, and options context
+              around qualified setups.
+            </p>
+          </article>
+
+          <article class="roadmap-card reveal d1">
+            <span class="tag">Personal guardrails</span>
+            <h3>Your rules, built into the experience.</h3>
+            <p>
+              Set limits around trade frequency, losses, position size,
+              and cooling-off periods.
+            </p>
+          </article>
+
+          <article class="roadmap-card reveal d2">
+            <span class="tag">Automated trading</span>
+            <h3>Let the system handle the next step.</h3>
+            <p>
+              Future automation could move qualified setups from alert to execution
+              within the boundaries you set.
+            </p>
+          </article>
+
+        </div>
+
+        <p class="roadmap-note reveal">
+          These features are planned or under exploration and are not currently
+          available. Scope and release timing may change.
+        </p>
+
+      </div>
+    </section>
+
+    <!-- ===================== CTA ===================== -->
+    <section class="section cta" id="contact">
+      <div class="wrap reveal">
+
+        <span class="eyebrow">The sloth doesn't chase</span>
+
+        <h2>Still early. Already watching.</h2>
+
+        <p class="lede">
+          The MarketSloth engine is already producing signals.
+          We're refining the product, growing its signal history,
+          and building toward everything you saw above.
+        </p>
+
+        <div class="hero-ctas" style="justify-content:center;">
+          <a class="btn btn-primary" href="mailto:contact@marketsloth.net">
+            Email us
+          </a>
+
+          <button class="btn" id="copy-email" type="button"
+            style="background:transparent; color:var(--sand); border-color:var(--line-dark);">
+            Copy email
+          </button>
+        </div>
+
+        <p class="price-note">
+          <a id="contact-email" href="mailto:contact@marketsloth.net">
+            contact@marketsloth.net
+          </a>
+        </p>
+
+        <p id="copy-email-status" class="price-note" role="status" aria-live="polite" style="min-height:1.6em;"></p>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="site">
+    <div class="wrap foot-grid">
+      <div>
+        <div class="foot-brand">
+          <img class="mark" src="assets/MarketSloth logomark nobackground beige.png" alt="" aria-hidden="true" />
+          <span>MarketSloth<span class="trademark">™</span></span>
+        </div>
+        <p class="fine">MarketSloth is not a registered investment adviser and does not provide personalized financial
+          advice. Signals are informational; markets involve risk of loss, and any signal can fail. Every trade is your
+          decision, executed in your own brokerage account.</p>
       </div>
     </div>
-  </section>
+  </footer>
 
-  <!-- ===================== GUARDRAILS ===================== -->
-  <section class="section" id="guardrails">
-    <div class="wrap guard-grid">
-      <div class="reveal">
-        <span class="eyebrow">Discipline</span>
-        <h2 style="margin:.5rem 0 .9rem;">The only product that tells you to stop.</h2>
-        <p class="lede">A brokerage makes money when you overtrade. An alert Discord makes money on hype. Their incentives forbid this feature. Ours require it.</p>
-        <p class="lede" style="margin-top:1rem;">During onboarding, you write your own rules. MarketSloth enforces them at the exact moment willpower fails — and your own history, inside the rules vs. outside them, becomes personal proof of why they exist.</p>
-        <ul class="rules" aria-label="Your guardrails">
-          <li>Max <b>3</b> trades / day</li>
-          <li>Max <b>2</b> contracts / position</li>
-          <li>Daily loss cap <b>$150</b></li>
-          <li><b>No</b> overnight holds</li>
-          <li>Cool-off after <b>2</b> straight losses</li>
-          <li>Profit-off-table reminders</li>
-        </ul>
-      </div>
-      <div class="guard-cards">
-        <article class="guard-card reveal d1">
-          <span class="gtag">Guardrail reached · 3 of 3 trades today</span>
-          <h3>AMD — intraday momentum setup confirmed</h3>
-          <p>This one is <b>logged for you</b> and resolves in the ledger like any other. <b>Sit this one out.</b> The line your calm self drew still holds.</p>
-        </article>
-        <article class="guard-card cool reveal d2">
-          <span class="gtag">Cooling-off · 2 consecutive losses</span>
-          <h3>No entries for the rest of the session</h3>
-          <p>Instead of the next entry, a pause. Tomorrow the engine is still watching — <b>nothing gets missed while you step away.</b></p>
-        </article>
-      </div>
-    </div>
-  </section>
+  <script>
+    /* ---------- navigation menu ---------- */
 
-  <!-- ===================== WHAT IT ISN'T ===================== -->
-  <section class="section isnt">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow">Honest expectation-setting</span>
-        <h2>What MarketSloth deliberately isn't.</h2>
-      </div>
-      <ul class="isnt-list">
-        <li class="reveal"><h3><span class="no">Not</span> a crystal ball</h3><p>It doesn't claim to predict markets and doesn't promise income. Any signal can fail — the invalidation level is printed on every alert precisely because failure is normal.</p></li>
-        <li class="reveal d1"><h3><span class="no">Not</span> autonomous</h3><p>Nothing executes without you. Every trade is your decision, in your brokerage account. MarketSloth never touches your money.</p></li>
-        <li class="reveal d1"><h3><span class="no">Not</span> a firehose</h3><p>Fewer, better, fully-explained alerts is the explicit design goal. You're drowning in noise, not starved of it.</p></li>
-        <li class="reveal d2"><h3><span class="no">Not</span> a guru</h3><p>No courses, no lifestyle photos, no "last chance" countdowns. The ledger speaks; we don't.</p></li>
-      </ul>
-    </div>
-  </section>
+    const header = document.querySelector("header.site");
+    const menuToggle = document.querySelector(".menu-toggle");
+    const primaryNav = document.querySelector("#primary-nav");
 
-  <!-- ===================== CTA ===================== -->
-  <section class="section cta">
-    <div class="wrap reveal">
-      <span class="eyebrow">The sloth doesn't chase</span>
-      <h2>MarketSloth is on its way.</h2>
-      <p class="lede">The engine is in development. If watching less and trading better sounds like your kind of edge, reach out — we’d love to tell you more and let you know the moment it’s live.</p>
-      <div class="hero-ctas" style="justify-content:center;">
-        <a class="btn btn-primary" href="mailto:marketslothcompany@gmail.com">Email us to learn more</a>
-        <a class="btn btn-ghost" href="#ledger">See the ledger preview</a>
-      </div>
-      <p class="price-note">We read every message — <a href="mailto:marketslothcompany@gmail.com" style="color:var(--moss-dark); font-weight:600;">marketslothcompany@gmail.com</a></p>
-    </div>
-  </section>
-</main>
+    function setMenu(open) {
+      header.classList.toggle("menu-open", open);
+      menuToggle.setAttribute("aria-expanded", String(open));
+      menuToggle.setAttribute(
+        "aria-label",
+        open ? "Close navigation menu" : "Open navigation menu"
+      );
 
-<!-- ===================== FOOTER ===================== -->
-<footer class="site">
-  <div class="wrap foot-grid">
-    <div>
-      <div class="foot-brand">
-        <img class="mark" src="assets/MarketSloth logomark nobackground beige.png" alt="" aria-hidden="true"/>
-        <span>MarketSloth<span class="trademark">™</span></span>
-      </div>
-      <p class="fine">MarketSloth is not a registered investment adviser and does not provide personalized financial advice. Signals are informational; markets involve risk of loss, and any signal can fail. Every trade is your decision, executed in your own brokerage account.</p>
-    </div>
-    <ul class="foot-links">
-      <li><a href="#ledger">Public ledger</a></li>
-      <li><a href="#how">How it works</a></li>
-      <li><a href="#guardrails">Guardrails</a></li>
-      <li><a href="mailto:marketslothcompany@gmail.com">Contact</a></li>
-    </ul>
-  </div>
-</footer>
+      if (open) {
+        header.classList.remove("header-hidden");
+      }
+    }
 
-<script>
-  // Scroll reveals (respects reduced motion via CSS)
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: 0.15 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-</script>
+    menuToggle.addEventListener("click", () => {
+      setMenu(!header.classList.contains("menu-open"));
+    });
+
+    primaryNav.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => setMenu(false));
+    });
+
+    document.addEventListener("click", event => {
+      if (
+        header.classList.contains("menu-open") &&
+        !header.contains(event.target)
+      ) {
+        setMenu(false);
+      }
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        setMenu(false);
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 960) {
+        setMenu(false);
+      }
+    });
+
+
+    /* ---------- hide on scroll down / reveal on scroll up ---------- */
+
+    let lastScrollY = window.scrollY;
+    let accumulatedScroll = 0;
+    let lastDirection = 0;
+
+    window.addEventListener("scroll", () => {
+      const currentScrollY = window.scrollY;
+      const delta = currentScrollY - lastScrollY;
+
+      const direction =
+        delta > 0 ? 1 :
+          delta < 0 ? -1 :
+            0;
+
+      /* Always show near the top or while menu is open */
+      if (
+        currentScrollY < 80 ||
+        header.classList.contains("menu-open")
+      ) {
+        header.classList.remove("header-hidden");
+        accumulatedScroll = 0;
+      }
+
+      else if (direction !== 0) {
+
+        /* Reset accumulator whenever direction changes */
+        if (direction !== lastDirection) {
+          accumulatedScroll = 0;
+        }
+
+        accumulatedScroll += Math.abs(delta);
+
+        /* Scrolling down — hide after a short movement */
+        if (direction === 1 && accumulatedScroll > 14) {
+          header.classList.add("header-hidden");
+          accumulatedScroll = 0;
+        }
+
+        /* Scrolling up — reveal quickly */
+        if (direction === -1 && accumulatedScroll > 8) {
+          header.classList.remove("header-hidden");
+          accumulatedScroll = 0;
+        }
+
+        lastDirection = direction;
+      }
+
+      lastScrollY = currentScrollY;
+    }, { passive: true });
+
+
+    /* ---------- section reveal animations ---------- */
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document
+      .querySelectorAll(".reveal")
+      .forEach(element => io.observe(element));
+  </script>
+
+  <script>
+    const copyEmailButton = document.getElementById("copy-email");
+    const copyEmailStatus = document.getElementById("copy-email-status");
+    const contactEmail = document.getElementById("contact-email");
+
+    copyEmailButton.addEventListener("click", async () => {
+      copyEmailStatus.textContent = "";
+      copyEmailButton.disabled = true;
+
+      try {
+        await navigator.clipboard.writeText(
+          contactEmail.textContent.trim()
+        );
+
+        copyEmailStatus.textContent = "Email address copied!";
+      } catch {
+        copyEmailStatus.textContent =
+          "Couldn't copy automatically. Select and copy the email address above.";
+      } finally {
+        copyEmailButton.disabled = false;
+      }
+    });
+  </script>
 </body>
+
 </html>
