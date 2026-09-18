@@ -4,7 +4,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MarketSloth — We watch the market so you don't have to</title>
+  <title>MarketSloth — Market Monitoring & Trade Alerts</title>
+
+  <meta name="description"
+    content="MarketSloth monitors the market for qualified trade setups, sends clear alerts with price targets and stop-loss levels, and evaluates signal outcomes using available market data." />
+
+  <link rel="icon" type="image/png" href="assets/MarketSloth Favicon.png" />
+  <!-- ---------- SEO / social sharing ---------- -->
+
+  <link rel="canonical" href="https://marketsloth.net/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://marketsloth.net/" />
+  <meta property="og:site_name" content="MarketSloth" />
+
+  <meta property="og:title" content="MarketSloth — Market Monitoring & Trade Alerts" />
+
+  <meta property="og:description"
+    content="MarketSloth monitors the market for qualified trade setups, sends clear alerts with price targets and stop-loss levels, and evaluates signal outcomes using available market data." />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <meta name="theme-color" content="#111312" />
+  <meta property="og:image" content="https://marketsloth.net/MarketSloth-og-banner.png" />
+
+  <meta property="og:image:alt" content="MarketSloth — You hang around. We'll watch the market for you." />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <meta name="twitter:image" content="https://marketsloth.net/MarketSloth-og-banner.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -1684,8 +1712,15 @@
       <div class="wrap anatomy-grid">
 
         <div class="reveal signal-preview-wrap">
-          <img class="signal-preview-image" src="assets/Marketsloth Signal Example.png"
-            alt="Example MarketSloth call signal for SPY" />
+          <div>
+            <img class="signal-preview-image" src="assets/Marketsloth Signal Example.png"
+              alt="Example MarketSloth call signal for SPY" />
+
+            <p class="sample-note" style="margin-top:10px; max-width:500px;">
+              Example signal for illustration. Prices shown refer to the underlying
+              stock or ETF, not an options contract.
+            </p>
+          </div>
         </div>
 
         <!-- EXPLANATION -->
@@ -1734,8 +1769,8 @@
                 </h3>
 
                 <p>
-                  The current price, targets, and stop loss define the
-                  setup before you decide whether it fits your own plan.
+                  The stock price at signal time, targets, and stop-loss level describe the setup before you decide
+                  whether it fits your own plan.
                 </p>
               </div>
             </li>
@@ -1790,8 +1825,8 @@
           <h2>The alert is just the start.</h2>
 
           <p class="lede">
-            MarketSloth keeps tracking the setup after it fires —
-            until the outcome is recorded.
+            MarketSloth reviews available market data after each signal to evaluate
+            whether its targets or stop-loss level were reached.
           </p>
         </div>
 
@@ -1808,13 +1843,13 @@
           </li>
 
           <li class="stage reveal d2">
-            <h3>Tracked live</h3>
-            <p>Targets and stop loss are monitored.</p>
+            <h3>Outcome reviewed</h3>
+            <p>Available price data is checked against the signal’s levels.</p>
           </li>
 
           <li class="stage reveal d3">
-            <h3>Resolved</h3>
-            <p>Target hit or loss recorded.</p>
+            <h3>Outcome classified</h3>
+            <p>Target, stop-loss, or unresolved status recorded.</p>
           </li>
 
           <li class="stage ledger-stage reveal d3">
@@ -1825,8 +1860,9 @@
         </ol>
 
         <p class="stages-note reveal">
-          <strong>Every signal is followed through to an outcome</strong>
-          — whether you take the trade or not.
+          <strong>Signal outcomes are evaluated independently of whether you take
+            the trade.</strong>
+          Incomplete data can leave an outcome unresolved.
         </p>
 
       </div>
@@ -1843,8 +1879,9 @@
           </h2>
 
           <p>
-            MarketSloth tracks each signal through resolution —
-            <strong>from alert to recorded outcome.</strong>
+            MarketSloth records generated signals and evaluates their outcomes
+            using available market data.
+            <strong>Signal outcomes describe the setup, not your actual trading returns.</strong>
           </p>
 
           <p>
@@ -1855,9 +1892,9 @@
 
           <ul class="refuses">
             <li>signals timestamped when generated</li>
-            <li>targets and stop losses tracked after the alert</li>
-            <li>wins and losses kept in the record</li>
-            <li>performance measured from the full signal history</li>
+            <li>original targets and stop-loss levels retained for review</li>
+            <li>favorable and unfavorable outcomes included</li>
+            <li>data coverage and unresolved outcomes identified in reporting</li>
           </ul>
         </div>
 
@@ -1962,8 +1999,9 @@
             </div>
           </div>
           <p class="sample-note" style="margin-top:10px;">
-            Illustrative interface preview — results shown are examples, not live MarketSloth performance.
-            Public reporting will be built from the live signal history.
+            Illustrative interface preview — results shown are examples, not live
+            MarketSloth performance. Public reporting will be built from the live
+            signal history.
           </p>
         </div>
       </div>
@@ -2029,7 +2067,7 @@
           </h2>
 
           <p class="lede">
-            MarketSloth is starting with clear signals, defined risk,
+            MarketSloth is starting with clear signals, defined price levels,
             and outcome tracking. From there, we're building toward
             a more personalized market-monitoring experience.
           </p>
@@ -2075,7 +2113,8 @@
         </div>
 
         <p class="roadmap-note reveal">
-          Roadmap concepts reflect where we're building toward and are not promises of release timing or availability.
+          These features are planned or under exploration and are not currently
+          available. Scope and release timing may change.
         </p>
 
       </div>
@@ -2096,17 +2135,23 @@
         </p>
 
         <div class="hero-ctas" style="justify-content:center;">
-          <a class="btn btn-primary nav-contact" href="#contact">
-            Get in touch
+          <a class="btn btn-primary" href="mailto:contact@marketsloth.net">
+            Email us
           </a>
 
+          <button class="btn" id="copy-email" type="button"
+            style="background:transparent; color:var(--sand); border-color:var(--line-dark);">
+            Copy email
+          </button>
         </div>
 
         <p class="price-note">
-          <a href="mailto:contact@marketsloth.net">
+          <a id="contact-email" href="mailto:contact@marketsloth.net">
             contact@marketsloth.net
           </a>
         </p>
+
+        <p id="copy-email-status" class="price-note" role="status" aria-live="polite" style="min-height:1.6em;"></p>
 
       </div>
     </section>
@@ -2243,6 +2288,30 @@
     document
       .querySelectorAll(".reveal")
       .forEach(element => io.observe(element));
+  </script>
+
+  <script>
+    const copyEmailButton = document.getElementById("copy-email");
+    const copyEmailStatus = document.getElementById("copy-email-status");
+    const contactEmail = document.getElementById("contact-email");
+
+    copyEmailButton.addEventListener("click", async () => {
+      copyEmailStatus.textContent = "";
+      copyEmailButton.disabled = true;
+
+      try {
+        await navigator.clipboard.writeText(
+          contactEmail.textContent.trim()
+        );
+
+        copyEmailStatus.textContent = "Email address copied!";
+      } catch {
+        copyEmailStatus.textContent =
+          "Couldn't copy automatically. Select and copy the email address above.";
+      } finally {
+        copyEmailButton.disabled = false;
+      }
+    });
   </script>
 </body>
 
